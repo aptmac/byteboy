@@ -2,10 +2,15 @@
     "name": "byteboy",
     "displayName": "Byteboy",
     "description": "A Companion Extension for Byteman",
+    "icon": "images/byteboy.png",
     "version": "0.0.1",
     "publisher": "aptmac",
     "engines": {
         "vscode": "^1.17.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aptmac/byteboy"
     },
     "categories": [
         "Languages"
@@ -21,6 +26,10 @@
             "language": "byteman",
             "scopeName": "",
             "path": "./syntaxes/byteman.tmLanguage.json"
+        }],
+        "snippets": [{
+            "language": "byteman",
+            "path": "./snippets/byteman.json"
         }]
     }
 }
