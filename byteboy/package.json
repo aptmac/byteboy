@@ -1,0 +1,26 @@
+{
+    "name": "byteboy",
+    "displayName": "Byteboy",
+    "description": "A Companion Extension for Byteman",
+    "version": "0.0.1",
+    "publisher": "aptmac",
+    "engines": {
+        "vscode": "^1.17.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "byteman",
+            "aliases": ["Byteman", "byteman"],
+            "extensions": [".btm"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "byteman",
+            "scopeName": "",
+            "path": "./syntaxes/byteman.tmLanguage.json"
+        }]
+    }
+}
