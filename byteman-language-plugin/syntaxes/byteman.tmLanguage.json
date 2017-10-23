@@ -1,0 +1,42 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Byteman",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b(if|while|for|return)\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b(rule)\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b(end rule)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.btm",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.btm",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.btm"
+}
