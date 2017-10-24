@@ -1,0 +1,16 @@
+RULE Traceln when starting work
+CLASS InfLoop
+METHOD work
+AT ENTRY
+IF TRUE
+DO traceln("- We're starting work.");
+ENDRULE
+
+RULE Traceln when stopping work
+CLASS InfLoop
+METHOD work
+AT EXIT
+IF TRUE
+DO traceln("- - We're stopping work.");
+ENDRULE
+
