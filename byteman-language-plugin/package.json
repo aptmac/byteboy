@@ -29,7 +29,12 @@
         }],
         "snippets": [{
             "language": "byteman",
-            "path": "./snippets/byteman.json"
+            "path": "./snippets/byteman.tmSnippets.json"
+        }],
+        "themes": [{
+            "label": "byteman",
+            "uiTheme": "vs-dark",
+            "path": "./themes/byteman.tmTheme.json"
         }]
     }
 }
