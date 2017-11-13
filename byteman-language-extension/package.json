@@ -1,7 +1,7 @@
 {
     "name": "byteboy",
-    "displayName": "Byteboy",
-    "description": "A Companion Extension for Byteman",
+    "displayName": "Byteman Language Support for Visual Studio Code",
+    "description": "A Byteman Language Extension for VS Code",
     "icon": "images/byteboy.png",
     "version": "0.0.1",
     "publisher": "aptmac",
