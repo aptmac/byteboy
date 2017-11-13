@@ -14,10 +14,10 @@
 			"include": "#keywords"
 		},
 		{
-			"include": "#location"
+			"include": "#strings"
 		},
 		{
-			"include": "#strings"
+			"include": "#variable"
 		}
 	],
 	"repository": {
@@ -38,20 +38,44 @@
 		"keywords": {
 			"patterns": [
 				{
-					"name": "keyword.control.rule.byteman",
-					"match": "\\b^(?i)rule\\b"
+					"begin": "\\b^(?i)rule\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.rule.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.rule.byteman"
 				},
 				{
-					"name": "keyword.control.endrule.byteman",
-					"match": "\\b^(?i)class\\b"
+					"begin": "\\b^(?i)class\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.class.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.class.byteman"
 				},
 				{
-					"name": "keyword.control.interface.byteman",
-					"match": "\\b^(?i)interface\\b"
+					"begin": "\\b^(?i)interface\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.interface.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.interface.byteman"
 				},
 				{
-					"name": "keyword.control.method.byteman",
-					"match": "\\b^(?i)method\\b"
+					"begin": "\\b^(?i)method\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.method.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.method.byteman"
 				},
 				{
 					"name": "keyword.control.do.byteman",
@@ -68,6 +92,14 @@
 				{
 					"name": "keyword.control.endrule.byteman",
 					"match": "\\b^(?i)endrule\\b"
+				},
+				{
+					"name": "keyword.control.compile.byteman",
+					"match": "\\b^(?i)compile\\b"
+				},
+				{
+					"name": "keyword.control.nocompile.byteman",
+					"match": "\\b^(?i)nocompile\\b"
 				},
 				{
 					"name": "keyword.control.at.entry.byteman",
@@ -120,7 +152,68 @@
 				{
 					"name": "keyword.control.after.synchronize.byteman",
 					"match": "\\b^(?i)after\\s\\b(?i)synchronize"
+				},
+				{
+					"name": "keyword.operator.addition.byteman",
+					"match": "(.+)\\s?\\+\\s?(.+)|(.+)\\s?ADD\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.subtraction.byteman",
+					"match": "(.+)\\s?\\-\\s?(.+)|(.+)\\s?MINUS\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.multiplication.byteman",
+					"match": "(.+)\\s?\\*\\s?(.+)|(.+)\\s?TIMES\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.division.byteman",
+					"match": "(.+)\\s?\\/\\s?(.+)|(.+)\\s?DIVIDE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.modulo.byteman",
+					"match": "(.+)\\s?\\%\\s?(.+)|(.+)\\s?MOD\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.or.byteman",
+					"match": "(.+)\\s?\\|\\|\\s?(.+)|(.+)\\s?OR\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.and.byteman",
+					"match": "(.+)\\s?\\$\\$\\s?(.+)|(.+)\\s?AND\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.not.byteman",
+					"match": "(.+)\\s?\\!\\s?(.+)|(.+)\\s?NOT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.lessthanorequals.byteman",
+					"match": "(.+)\\s?\\<\\=\\s?(.+)|(.+)\\s?LE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.lessthan.byteman",
+					"match": "(.+)\\s?\\<\\s?(.+)|(.+)\\s?LT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.greaterthanorequals.byteman",
+					"match": "(.+)\\s?\\>\\=\\s?(.+)|(.+)\\s?GE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.greaterthan.byteman",
+					"match": "(.+)\\s?\\>\\s?(.+)|(.+)\\s?GT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.equals.byteman",
+					"match": "(.+)\\s?\\=\\=\\s?(.+)|(.+)\\s?EQ\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.doesntequal.byteman",
+					"match": "(.+)\\s?\\!\\=\\s?(.+)|(.+)\\s?NE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.new.byteman",
+					"match": "\\b(?i)new\\b"
 				}
+
 			]
 		},
 		"strings": {
@@ -131,6 +224,18 @@
 				{
 					"name": "constant.character.escape.byteman",
 					"match": "\\\\."
+				}
+			]
+		},
+		"variable": {
+			"patterns": [
+				{
+					"name": "variable.language.special.byteman",
+					"match": "(\\$\\!|\\$\\^|\\$\\#|\\$\\*|\\$\\@|\\$CLASS|\\$METHOD)"
+				},
+				{
+					"name": "variable.language.other.byteman",
+					"match": "\\$(.+)"
 				}
 			]
 		}

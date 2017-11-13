@@ -11,7 +11,7 @@ Here's a command to install the extension:
 
 ## Features
 - VS Code should auto-recognize ``.btm`` files
-- Byteman Language Support
+- Basic Byteman Language Support
 - Basic Syntax Highlighting
 
 ## Contributing
@@ -20,11 +20,12 @@ When making changes on the source-code, the folder must be re-copied to the ``~/
 
 To get started, in the grammar file at ``syntaxes/byteman.tmLanguage.json`` there are some useful documents included in a coment at the top. There is a link to the Byteman Language Syntax a found on the Byteman repo, a link to an existing language extension to get inspiration from, and a link to the manual for creating tmLanguage grammars as written by TextMate.
 
-## Thinking Big (TODOs & Areas of Improvement)
+## Thinking Big (TODOs & Future Areas of Improvement)
 - Add languge Snippets
 - Add IntelliSense Support (auto-completion)
 - Add a custom theme
 - Add highlighting for incorrect syntaxes
+- Add more comprehensive grammar (with better capturing)
 - Add debugging support
 
 ## Release Notes
