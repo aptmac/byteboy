@@ -1,3 +1,5 @@
 ../**/.idea
+.vscode/
 ../**/.vscode
 ../**/.class
+java.hprof.txt
