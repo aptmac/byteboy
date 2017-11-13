@@ -1,6 +1,6 @@
 # Byteboy
 
-A VSCode Extension for Byteman.
+A VSCode Language Plugin for Byteman.
 
 ## Features
 
