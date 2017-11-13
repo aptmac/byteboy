@@ -20,21 +20,12 @@
             "id": "byteman",
             "aliases": ["Byteman", "byteman"],
             "extensions": [".btm"],
-            "configuration": "./language-configuration.json"
+            "configuration": "./byteman.language-configuration.json"
         }],
         "grammars": [{
             "language": "byteman",
-            "scopeName": "",
+            "scopeName": "source.byteman",
             "path": "./syntaxes/byteman.tmLanguage.json"
-        }],
-        "snippets": [{
-            "language": "byteman",
-            "path": "./snippets/byteman.tmSnippets.json"
-        }],
-        "themes": [{
-            "label": "byteman",
-            "uiTheme": "vs-dark",
-            "path": "./themes/byteman.tmTheme.json"
         }]
     }
 }

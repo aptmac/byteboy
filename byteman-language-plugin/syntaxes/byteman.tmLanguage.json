@@ -1,6 +1,9 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"information_for_contributors": [
+		"Here is a link to the Byteman Rule Language: https://github.com/bytemanproject/byteman/blob/master/docs/asciidoc/src/main/asciidoc/chapters/Byteman-Rule-Language.adoc"
+	],
 	"name": "Byteman",
+	"scopeName": "source.byteman",
 	"patterns": [
 		{
 			"include": "#keywords"
@@ -14,15 +17,43 @@
 			"patterns": [
 				{
 					"name": "keyword.control.btm",
-					"match": "\\b(if|while|for|return)\\b"
+					"match": "\\b^(?i)rule\\b"
 				},
 				{
 					"name": "keyword.control.btm",
-					"match": "\\b(rule)\\b"
+					"match": "\\b^(?i)class\\b"
 				},
 				{
 					"name": "keyword.control.btm",
-					"match": "\\b(end rule)\\b"
+					"match": "\\b^(?i)interface\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)method\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)do\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)if\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)bind\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)at\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)after\\b"
+				},
+				{
+					"name": "keyword.control.btm",
+					"match": "\\b^(?i)end\\s*rule\\b"
 				}
 			]
 		},
@@ -37,6 +68,5 @@
 				}
 			]
 		}
-	},
-	"scopeName": "source.btm"
+	}
 }
