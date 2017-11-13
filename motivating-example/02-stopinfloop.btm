@@ -1,0 +1,8 @@
+RULE Exit The Loop 
+CLASS InfLoop
+METHOD doWork
+AT ENTRY
+IF TRUE
+DO
+$1 = 1;
+ENDRULE
