@@ -1,0 +1,31 @@
+{
+    "name": "byteboy",
+    "displayName": "Byteman Language Support for Visual Studio Code",
+    "description": "A Byteman Language Extension for VS Code",
+    "icon": "images/byteboy.png",
+    "version": "0.0.1",
+    "publisher": "aptmac",
+    "engines": {
+        "vscode": "^1.17.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aptmac/byteboy"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "byteman",
+            "aliases": ["Byteman", "byteman"],
+            "extensions": [".btm"],
+            "configuration": "./byteman.language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "byteman",
+            "scopeName": "source.byteman",
+            "path": "./syntaxes/byteman.tmLanguage.json"
+        }]
+    }
+}

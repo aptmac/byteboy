@@ -1,0 +1,243 @@
+{
+	"information_for_contributors": [
+		"Here is a link to the Byteman Rule Language: https://github.com/bytemanproject/byteman/blob/master/docs/asciidoc/src/main/asciidoc/chapters/Byteman-Rule-Language.adoc",
+		"If you're interested in contributing, but don't know how to start, here's a good example to follow from the Perl (master-race programming language) VS Code Extension: https://github.com/Microsoft/vscode/blob/master/extensions/perl/syntaxes/perl.tmLanguage.json",
+		"Lastly, he manual for tmLanguage grammars can be found here: https://manual.macromates.com/en/language_grammars"
+	],
+	"name": "Byteman",
+	"scopeName": "source.byteman",
+	"patterns": [
+		{
+			"include": "#line_comment"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#variable"
+		}
+	],
+	"repository": {
+		"line_comment": {
+			"patterns": [
+				{
+					"begin": "#",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.comment.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "comment.line.number-sign.byteman"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"begin": "\\b^(?i)rule\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.rule.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.rule.byteman"
+				},
+				{
+					"begin": "\\b^(?i)class\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.class.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.class.byteman"
+				},
+				{
+					"begin": "\\b^(?i)interface\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.interface.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.interface.byteman"
+				},
+				{
+					"begin": "\\b^(?i)method\\b",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.other.method.name.byteman"
+						}
+					},
+					"end": "\\n",
+					"name": "keyword.control.method.byteman"
+				},
+				{
+					"name": "keyword.control.do.byteman",
+					"match": "\\b^(?i)do\\b"
+				},
+				{
+					"name": "keyword.control.if.byteman",
+					"match": "\\b^(?i)if\\b"
+				},
+				{
+					"name": "keyword.control.bind.byteman",
+					"match": "\\b^(?i)bind\\b"
+				},
+				{
+					"name": "keyword.control.endrule.byteman",
+					"match": "\\b^(?i)endrule\\b"
+				},
+				{
+					"name": "keyword.control.compile.byteman",
+					"match": "\\b^(?i)compile\\b"
+				},
+				{
+					"name": "keyword.control.nocompile.byteman",
+					"match": "\\b^(?i)nocompile\\b"
+				},
+				{
+					"name": "keyword.control.at.entry.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)entry"
+				},
+				{
+					"name": "keyword.control.at.exit.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)exit"
+				},
+				{
+					"name": "keyword.control.at.line.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)line"
+				},
+				{
+					"name": "keyword.control.at.read.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)read"
+				},
+				{
+					"name": "keyword.control.at.write.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)write"
+				},
+				{
+					"name": "keyword.control.at.invoke.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)invoke"
+				},
+				{
+					"name": "keyword.control.at.synchronize.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)synchronize"
+				},
+				{
+					"name": "keyword.control.at.throw.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)throw"
+				},				
+				{
+					"name": "keyword.control.at.exception.exit.byteman",
+					"match": "\\b^(?i)at\\s\\b(?i)exception\\s\\b(?i)exit"
+				},
+				{
+					"name": "keyword.control.after.read.byteman",
+					"match": "\\b^(?i)after\\s\\b(?i)read"
+				},
+				{
+					"name": "keyword.control.after.write.byteman",
+					"match": "\\b^(?i)after\\s\\b(?i)write"
+				},
+				{
+					"name": "keyword.control.after.invoke.byteman",
+					"match": "\\b^(?i)after\\s\\b(?i)invoke"
+				},
+				{
+					"name": "keyword.control.after.synchronize.byteman",
+					"match": "\\b^(?i)after\\s\\b(?i)synchronize"
+				},
+				{
+					"name": "keyword.operator.addition.byteman",
+					"match": "(.+)\\s?\\+\\s?(.+)|(.+)\\s?ADD\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.subtraction.byteman",
+					"match": "(.+)\\s?\\-\\s?(.+)|(.+)\\s?MINUS\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.multiplication.byteman",
+					"match": "(.+)\\s?\\*\\s?(.+)|(.+)\\s?TIMES\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.division.byteman",
+					"match": "(.+)\\s?\\/\\s?(.+)|(.+)\\s?DIVIDE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.modulo.byteman",
+					"match": "(.+)\\s?\\%\\s?(.+)|(.+)\\s?MOD\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.or.byteman",
+					"match": "(.+)\\s?\\|\\|\\s?(.+)|(.+)\\s?OR\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.and.byteman",
+					"match": "(.+)\\s?\\$\\$\\s?(.+)|(.+)\\s?AND\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.not.byteman",
+					"match": "(.+)\\s?\\!\\s?(.+)|(.+)\\s?NOT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.lessthanorequals.byteman",
+					"match": "(.+)\\s?\\<\\=\\s?(.+)|(.+)\\s?LE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.lessthan.byteman",
+					"match": "(.+)\\s?\\<\\s?(.+)|(.+)\\s?LT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.greaterthanorequals.byteman",
+					"match": "(.+)\\s?\\>\\=\\s?(.+)|(.+)\\s?GE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.greaterthan.byteman",
+					"match": "(.+)\\s?\\>\\s?(.+)|(.+)\\s?GT\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.equals.byteman",
+					"match": "(.+)\\s?\\=\\=\\s?(.+)|(.+)\\s?EQ\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.doesntequal.byteman",
+					"match": "(.+)\\s?\\!\\=\\s?(.+)|(.+)\\s?NE\\s?(.+)"
+				},
+				{
+					"name": "keyword.operator.new.byteman",
+					"match": "\\b(?i)new\\b"
+				}
+
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.byteman",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.byteman",
+					"match": "\\\\."
+				}
+			]
+		},
+		"variable": {
+			"patterns": [
+				{
+					"name": "variable.language.special.byteman",
+					"match": "(\\$\\!|\\$\\^|\\$\\#|\\$\\*|\\$\\@|\\$CLASS|\\$METHOD)"
+				},
+				{
+					"name": "variable.language.other.byteman",
+					"match": "\\$(.+)"
+				}
+			]
+		}
+	}
+}
