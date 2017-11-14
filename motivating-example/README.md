@@ -37,6 +37,7 @@ With this in mind, ```01-detectloop.btm``` can be loaded using Byteman, and will
 The ```01-detectloop.btm``` contains two rules:
 1. RULE Traceln when starting work
 2. RULE Traceln when stopping work
+
 Both of these rules explicitly target the InfLoop class, and work method. 
 When loaded using Byteman, these rules allow the program to output a line of text to the console every time ```work()``` is entered and exited.
 Using this rule, the user can now be certain that there is a bug somewhere in the code that is causing ```work()``` to be called infinitely.</br>

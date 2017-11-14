@@ -13,7 +13,9 @@
         "url": "https://github.com/aptmac/byteboy"
     },
     "categories": [
-        "Languages"
+        "Languages",
+        "Grammars",
+        "Snippets"
     ],
     "contributes": {
         "languages": [{
@@ -26,6 +28,12 @@
             "language": "byteman",
             "scopeName": "source.byteman",
             "path": "./syntaxes/byteman.tmLanguage.json"
-        }]
+        }],
+        "snippets": [
+            {
+                "language": "byteman",
+                "path": "./snippets/byteman.snippets.json"
+            }
+        ]
     }
 }

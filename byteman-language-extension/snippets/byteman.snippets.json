@@ -1,0 +1,13 @@
+{
+  "Rule Template": {
+    "prefix": "RULE",
+    "body": [
+      "RULE <rule name>",
+      "CLASS <class name>",
+      "METHOD <method name>",
+      "<rule contents go here>",
+      "ENDRULE"
+    ],
+    "description": "Rule Template"
+  }
+}
