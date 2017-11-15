@@ -52,6 +52,8 @@ def add_endrule(script):
 # Helper Functions for Guided and User-Controlled Script Writing
 ###
 def create_guided_rule():
+    # Have it just create an advanced rule, for now.
+    create_advanced_rule()
     return
 
 def create_advanced_rule():
@@ -60,8 +62,7 @@ def create_advanced_rule():
     script = add_rule(script, input("What is the rule name: "))
     script = add_class(script, input("What is the target Class name: "))
     script = add_method(script, input("What is the target Method name: "))
-    # TODO: Add script logic
-    print("What is the body of the script?: ")
+    print("What is the body of the script?: (input an empty line when finished)")
     body = ''
     while True:
         line = input()
@@ -75,31 +76,33 @@ def create_advanced_rule():
     # and write that as the file name, but ask the user if they want
     # to have the filename be different than the rule name first
     filename = input ("What would you like to call your file?: ")
-
-    # TODO: This should be done dynamically, if no extension was added we should add one
-    filename += ".btm"
+    if filename.find(".btm") == -1:
+        filename += ".btm"
     file = open(filename, "w")
     file.write(script)
     file.close()
     return
 
+####
+# Main
+####
 def main():
     os.system('clear')
     print("-----------------------------------------------------")
     print("Welcome to the interactive Byteman script generator.")
     print("-----------------------------------------------------")
-    print("1. Guided Script-Template with results from anaylsis")
+    print("1. Guided Script-Template with results from analysis")
     print("2. Advanced Template with user-directed script writing")
     print("3. Exit")
     result = int(input("Please select your choice: "))
-    print(result)
     if result == 1:
         os.system('clear')
         create_guided_rule()
     elif result == 2:
         os.system('clear')
         create_advanced_rule()
-    print ("Goodbye.")
+    print("Goodbye.")
+
 
 if __name__ == "__main__":
     main()
