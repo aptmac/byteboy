@@ -10,7 +10,7 @@ public class InfLoop {
 
     public static void main(String[] args) { 
         InfLoop inf  = new InfLoop();
-	inf.doWork(0);
+	    inf.doWork(0);
     }
 
 }
