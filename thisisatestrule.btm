@@ -1,0 +1,7 @@
+RULE this is a test rule
+CLASS InfLoop
+METHOD Main
+AT ENTRY
+IF TRUE
+$1=1
+ENDRULE

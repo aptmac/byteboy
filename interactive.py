@@ -84,8 +84,22 @@ def create_advanced_rule():
     return
 
 def main():
-    create_advanced_rule()
-
+    os.system('clear')
+    print("-----------------------------------------------------")
+    print("Welcome to the interactive Byteman script generator.")
+    print("-----------------------------------------------------")
+    print("1. Guided Script-Template with results from anaylsis")
+    print("2. Advanced Template with user-directed script writing")
+    print("3. Exit")
+    result = int(input("Please select your choice: "))
+    print(result)
+    if result == 1:
+        os.system('clear')
+        create_guided_rule()
+    elif result == 2:
+        os.system('clear')
+        create_advanced_rule()
+    print ("Goodbye.")
 
 if __name__ == "__main__":
     main()
