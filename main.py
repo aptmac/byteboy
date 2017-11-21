@@ -7,19 +7,11 @@
 import os
 import sys
 
+from analysis import run_analysis
+
 def main(java_file):
     
-    # Runs the profiler on the provided java class
-    os.system("java -agentlib:hprof=cpu=times " + java_file)
-    
-    # Reads in the results, dumps some of it to the console
-    results = open("./java.hprof.txt", "r").read()
-    print(results[results.find("CPU TIME (ms)"):])
-
-    # print command line arguments
-    print("testing")
-    for arg in sys.argv[1:]:
-        print(arg)
+    run_analysis(java_file)
 
 if __name__ == "__main__":
     try:
