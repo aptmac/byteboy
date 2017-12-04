@@ -11,7 +11,6 @@ import re
 
 def run_analysis(java_file_path):
     #HPROF ranking indexes
-
     TOTAL_RANKINGS = 5
     RANK   = 0
     SELF   = 1
@@ -19,6 +18,8 @@ def run_analysis(java_file_path):
     COUNT  = 3
     TRACE  = 4
     METHOD = 5
+
+    THRESHOLD = 20
 
     """returns a .txt file with analysis details for interactive"""
     # Runs the profiler on the provided java class
@@ -29,8 +30,6 @@ def run_analysis(java_file_path):
         # check to see if it is a relative path or if there is something there already
         fullpath =  os.path.realpath(java_file_path)  
         print "Analyzing..."
-        flags = " -agentlib:hprof=cpu=times -classpath " + os.path.dirname(fullpath) + " " + os.path.basename(fullpath)
-        # look into subprocesses for refactoring!
         os.system("java -agentlib:hprof=cpu=times -classpath " + os.path.dirname(fullpath) + " " + os.path.basename(fullpath))
         # Reads in the results, dumps some of it to the console
         results = open("./java.hprof.txt", "r")
@@ -43,22 +42,14 @@ def run_analysis(java_file_path):
                 for index, entry in enumerate(results):
                     if (index < TOTAL_RANKINGS):
                         temp_list = entry.split()
-                        trace_search_list.append("TRACE " + temp_list[TRACE] + ":") 
-                        del temp_list[SELF]
-                        rankings.append(temp_list)
+                        # check to see if the process is passing CPU usage threshold
+                        if (float(temp_list[SELF].strip("%")) >= THRESHOLD):
+                            trace_search_list.append("TRACE " + temp_list[TRACE] + ":") 
+                            # ignore method name as it will appear in stack trace and accum as they are not useful for diagnostic anymore
+                            del temp_list[METHOD]
+                            del temp_list[ACCUM]
+                            rankings.append(temp_list)
                     else: break
-
-        # for line in results:
-        #     if trace_search_list[search_index] in line:
-        #         print "found at " + trace_search_list[search_index]
-        #         for method in results:
-        #             if ("TRACE " not in method):
-        #                 rankings[search_index].append(method)
-        #             else:
-        #                 search_index += 1
-        #      #           print "increase search index"
-        #                 break
-        # #print rankings
         search_index = 0 
         for search_query in trace_search_list:
             results = open("./java.hprof.txt", "r")
@@ -73,5 +64,8 @@ def run_analysis(java_file_path):
                             search_index += 1
                             break
         print rankings
+        print "Analysis done. Check for arguments..."
+        javap_result = subprocess.check_output("javap -p -classpath " + os.path.dirname(fullpath) + " " + os.path.basename(fullpath), shell=True)
+        print javap_result
     else:
         print ("Java file does not exist.")
