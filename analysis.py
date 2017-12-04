@@ -7,6 +7,7 @@
 import os
 import sys
 import subprocess
+import re
 
 def run_analysis(java_file_path):
     #HPROF ranking indexes
@@ -46,19 +47,31 @@ def run_analysis(java_file_path):
                         del temp_list[SELF]
                         rankings.append(temp_list)
                     else: break
+
+        # for line in results:
+        #     if trace_search_list[search_index] in line:
+        #         print "found at " + trace_search_list[search_index]
+        #         for method in results:
+        #             if ("TRACE " not in method):
+        #                 rankings[search_index].append(method)
+        #             else:
+        #                 search_index += 1
+        #      #           print "increase search index"
+        #                 break
+        # #print rankings
         search_index = 0 
-        results = open("./java.hprof.txt", "r")
-        for line in results:
-            print "searching for " + trace_search_list[search_index]
-            if trace_search_list[search_index] in line:
-                print "found at " + trace_search_list[search_index]
-                for method in results:
-                    if ("TRACE " not in method):
-                        rankings[search_index].append(method)
-                    else:
-                        search_index += 1
-                        print "increase search index"
-                        break
-        #print rankings
+        for search_query in trace_search_list:
+            results = open("./java.hprof.txt", "r")
+            for line in results:
+                if search_query in line:
+                    for method in results:
+                        if ("TRACE " not in method):
+                            method = re.sub(r'\t', '', method)
+                            method = re.sub(r'\n', '', method)
+                            rankings[search_index].append(method)
+                        else:
+                            search_index += 1
+                            break
+        print rankings
     else:
         print ("Java file does not exist.")
