@@ -1,6 +1,6 @@
 # Final Paper 
 Tentative due date: December 05, 2017  
-Final Day to submit: December 17, 2017
+Final Day to submit: December 08, 2017
 
 ## Sections (tentative to change)
 1. Introduction
@@ -10,7 +10,6 @@ Final Day to submit: December 17, 2017
 5. Evaluation & Observations
 6. Related Work
 7. Conclusions & Future Work
-8. Acknowledgements
 
 ## Helpful Tips for writing LaTeX (in Visual Studio Code)
 - Use LaTeX-workshop extension available at: [https://github.com/James-Yu/LaTeX-Workshop]()
