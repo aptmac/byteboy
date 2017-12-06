@@ -1,0 +1,300 @@
+% TEMPLATE for Usenix papers, specifically to meet requirements of
+%  USENIX '05
+% originally a template for producing IEEE-format articles using LaTeX.
+%   written by Matthew Ward, CS Department, Worcester Polytechnic Institute.
+% adapted by David Beazley for his excellent SWIG paper in Proceedings,
+%   Tcl 96
+% turned into a smartass generic template by De Clarke, with thanks to
+%   both the above pioneers
+% use at your own risk.  Complaints to /dev/null.
+% make it two column with no page numbering, default is 10 point
+
+% Munged by Fred Douglis <douglis@research.att.com> 10/97 to separate
+% the .sty file from the LaTeX source template, so that people can
+% more easily include the .sty file into an existing document.  Also
+% changed to more closely follow the style guidelines as represented
+% by the Word sample file. 
+
+% Note that since 2010, USENIX does not require endnotes. If you want
+% foot of page notes, don't include the endnotes package in the 
+% usepackage command, below.
+
+% This version uses the latex2e styles, not the very ancient 2.09 stuff.
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix,epsfig,endnotes}
+
+\begin{document}
+
+%don't want date printed
+\date{}
+
+%make title bold and 14 pt font (Latex default is non-bold, 16 pt)
+\title{\Large \bf Byteboy : A Byteman Companion Application}
+
+\author{
+{\rm Alex P. T. Macdonald}\\
+apmacdon[at]sfu.ca\\
+Simon Fraser University
+\and
+{\rm Ian Pun}\\
+Simon Fraser University
+} % end author
+
+\maketitle
+
+\subsection*{ABSTRACT}
+As computer programs grow larger and more complex, the likelihood of catastrophic issues may increase over time. Although many bugs can be discovered by using modern testing frameworks, some bugs may go unrecognized and appear in production builds. 
+
+Byteman is a powerful open-source tracing and debugging tool for Java, that injects Java code into application methods without the need of recompilation, repackaging, or even redeploying the application. However, the Byteman scripting language syntax is not currently supported by IDEs, and learning how to write Byteman rules is a completely manual and potentially tedious process. Currently, learning Byteman requires the user to either read the User's Manual, or search for tutorial blog posts that can be adapted to fit their needs. 
+
+This paper presents Byteboy, a companion application suite for Byteman which includes a semi-automatic rule builder, a VS Code language extension, and a basic fuzz test generator for the Byteman scripting language.  
+
+\section{INTRODUCTION}
+
+Writing bug free software is often easier said than done. Modern compilers and testing frameworks will often help developers minimize the number of bugs that make it into production environments, but there is no guarantee that the end result will be completely error free. For example, a Java program with poor exception handling coverage may pass a syntax check, but will crash if an unexpected exception type is thrown in response to an input. As a result, there is a need for tools that can diagnose and repair software bugs in runtime environments, and can interact with the program code in order to either create a temporary fix, or reveal the root cause of the error such that a proper fix can be developed.
+
+An example of a tool that is capable of diagnosing and repairing errors in Java programs is Byteman\cite{bytemanwebsite}. Byteman is a bytecode injection tool, that allows the user to write code using the Byteman scripting language, which will be injected into a running application. Currently, there is no IDE language support for the Byteman scripting language, and the best methods of learing how to write rules includes reading the Programmer's Guide \cite{bytemanguide}, reading various tutorial blog posts\cite{bytemanblog}, or by watching a Byteman tutorial YouTube video\cite{bytemanvideo}. As a result, when looking at Byteman from the perspective of a first time user it may present a large learning curve, especially to a developer that is accustomed to the modern luxuries of language learning that include code snippets, hints, generators\cite{yoman}, and guided learning.
+
+In this paper, we propose Byteboy, a companion application for Byteman. Byteboy provides functionality for manual and semi-automatic rule generation, fuzz test generation, and a Visual Studio Code Byteman rule language extension. Byteboy was designed to improve the Byteman user experience from the point of rule inception, through to actually implementing and shipping the proposed bug-fixing rule file.
+
+
+
+\section{BACKGROUND}
+
+\subsection{Byteman}
+
+Byteman is a tool for monitoring, debugging, and testing Java code\cite{bytemanwebsite}. It is a Java Virtual Machine Tool Interface (JVMTI) agent, which allows it to be installed via the command line to retrieve and interact with data from the Java Virtual Machine (JVM). Byteman modifies the bytecode of an application at runtime, and can inject into any Java methods (including the JDK runtime and libraries), and can even interact with private methods\cite{bytemanwebsite}. Unlike many other bytecode transformers, Byteman operates at the level of Java (not bytecode), so you provide Byteman with rules with specify the Java code you want to be executed, and Byteman works out how to rewrite the bytecode such that it behaves as if it were native to the source code\cite{bytemanwebsite}.
+
+\subsection{Byteman Rule Syntax}
+
+\noindent
+The syntax of a Byteman rule is as follows:
+
+{\tt \small
+\begin{verbatim}
+RULE <unique-name>
+CLASS <classname>
+METHOD <method-name>
+AT <entry/exit>
+IF <condition>
+DO <action>
+ENDRULE
+\end{verbatim}
+}
+
+{\tt RULE} specifies the name of the rule, which will be used when unloading the rule, and should be unique for best practices.
+
+{\tt CLASS} specifies the class the rule wants to target.
+
+{\tt METHOD} specifies the target method within the selected class.
+
+{\tt AT} specifies the timing of which the rule logic should take place relative to the method. For example, {\tt AT ENTRY} causes the rule logic to execute when the target method is entered, and {\tt AT EXIT} can be used to execute code when the method has completed execution.
+
+{\tt IF} specifies a condition in which the rule logic will execute. This can be based on variable input, or conditions of interest, or could be left as {\tt TRUE} to always execute.
+
+{\tt DO} specifies the logic of the rule, in which actions will be executed. This is where the rule can bind to existing variables, create new variables (such as counters), or use traceln statements to print information to the console.
+
+{\tt ENDRULE} specifies the end of the rule content. A single Byteman script may contain many rules, so ensuring separation using the {\tt RULE} and {\tt ENDRULE} are important for passing syntax checks, but also for ensuring that individual rules can be unloaded at will without having to remove all of the rules. 
+
+\subsection{Using Byteman}
+
+Byteman can be used on an application that is currently executing, or at start time. Byteman is a JVMTI agent, which allows it to be supplied to the {\tt javaagent} argument when running a Java application. 
+
+If {\tt BYTEMAN\_HOME} is an environment variable that points to the current installed or downloaded version of Byteman, a script ({\tt rule.btm} in this case) can be loaded along side running the Java program {\tt HelloWorld} with the following command:
+
+\begin{center}
+\noindent
+{\tt java -javaagent=\$BYTEMAN\_HOME
+/lib/byteman.jar=script:rule.btm HelloWorld}
+\end{center}
+
+\noindent
+Please see the Byteman Programmer's Guide\cite{bytemanguide} for advanced syntax, use cases, and examples.
+
+
+\section{MOTIVATION}
+
+This section presents an example to illustrate how Byteman can be used to trace and debug bugs in Java programs.
+
+\subsection{Example Application}
+
+Consider the following Java program:
+{\tt \small
+\begin{verbatim}
+public class InfLoop {
+
+    private void doWork(int i) {
+        while(i == 0) {
+            work();
+        }
+    }
+
+    private static void work() {}
+
+    public static void main(String[] args) { 
+        InfLoop inf  = new InfLoop();
+        inf.doWork(0);
+    }
+}
+\end{verbatim}
+}
+
+The above Java application contains a bug which will cause it to become stuck in an infinite loop. The main method instantiates a new InfLoop object, and decides to put the object to work. The InfLoop object has it's {\tt doWork()} method invoked and is passed the number zero, which allows entry into the while loop and causes {\tt work()} to be called. However, the developer of this program forgot to write an exit condition for the loop, and now the program will loop infinitely. While this program is simplistic for the sake of being an example, the behaviour of this object is not completely unbelievable; it would be completely understandable to have an object that enters a loop after calling a function.
+
+Compiling and running the above program will not throw any errors, and upon executing this program in the terminal, the user will be greeted with a blinking prompt while the program is stuck in execution. With no definitive indication of if or where an error is occurring, this is a good time to construct some Byteman rules.  
+
+\subsection{Tracing the Error}
+
+The first step in debugging the above application will be to trace the error, and try to gather some information about the current program behaviour. Based on looking at the source code, a good point to start tracing may be the entry point of the {\tt work()} method, to see if the application is actually doing any work. In order to confirm or deny the activity of {\tt work()}, the following Byteman rule will be constructed:
+
+{\tt \small
+\begin{verbatim}
+RULE Traceln when starting work
+CLASS InfLoop
+METHOD work
+AT ENTRY
+IF TRUE
+DO traceln("- We're starting work.");
+ENDRULE
+\end{verbatim}
+}
+
+The above rule targets the entry point of the {\tt work()} method, and when called, will output a string to the console. 
+
+After loading this Byteman rule into the running application, the console will be flooded with strings indicating the constant and relentless calling of the {\tt work()} method. At this point, it can be deduced that the program may be stuck in execution, and it may be a good time to consider a Byteman script that can relieve the application.
+
+\subsection{Debugging the Error}
+
+Now that the error has been traced and verified, a Byteman rule may be able to be constructed with the purpose of exiting the loop. Going back to the source code, it is evident that the reason {\tt work()} is being called so frequently is because it is being called from within a loop that will only exit if the variable i is changed such that it no longer equals zero. The variable i is an argument that is passed to {\tt doWork()} from the main method, and can be altered by the following Byteman rule:
+
+{\tt \small
+\begin{verbatim}
+RULE Exit The Loop 
+CLASS InfLoop
+METHOD doWork
+AT ENTRY
+IF TRUE
+DO
+$1 = 1;
+ENDRULE
+\end{verbatim}
+}
+
+The above rule targets the entry point of the {\tt doWork()} method, and uses the \$1 to bind to the first argument in the function declaration (which is i in this case), and re-assigns the value to 1. 
+
+As a result, when running this program with the above rule injected, the program will not enter the infinite loop, and will allow the program to terminate.
+
+\subsection{Introducing Byteboy}
+
+As illustrated using the above Java program and Byteman rules, writing these rules requires knowledge of the target application and access to it's source code in order to design rules that accomplish a specific task. The above example involved a short Java program with a glaring and obvious bug, but what happens if a developer encounters an error in their application that spans thousands of lines of code, and maybe aren't intimately familiar with all aspects of the code base? Furthermore, modern IDEs have no support for the Byteman scripting language, which causes developers to write their scripts without the modern luxuries that language extensions offer. Finally, at the moment, the quickest way of learning to write Byteman rules would be from reading one of the many helpful blog posts\cite{bytemanblog} or YouTube videos\cite{bytemanvideo} that target beginner and first time users, but no tool currently exists that can help guide a user through the creation of their first scripts.
+
+Here, we wish to present Byteboy - a companion application for Byteman. Byteboy was designed to enhance the Byteman user experience by aiding the development of rules starting from the point of inception, through to the result of creating in a production-quality script. 
+
+The primary functionality of Byteboy is it's rule generator, which can be used in a manual or semi-automatic capacity. The manual rule generation using Byteboy is reminiscent of the Yeoman Generator\cite{yoman}, in which the program will guide new and first-time users through the process of writing rules. The semi-automatic rule generation actually performs an execution of the target program, and collects and aggregates information about the application performance and code structure to generate a set of plausible rules.   
+
+Another feature of Byteboy is it's fuzz test generator, in which it performs the same analysis of the semi-automatic rule generation, but instead of suggesting rules that could be used to trace or debug the code, it generates rules with the aim of producing unexpected behaviour in the source program.
+
+Lastly, Byteboy ships with a language extension for Visual Studio Code which provides support for the Byteman scripting language.
+
+\section{APPROACH}
+
+This section describes our approach for Byteboy. Here, we will primarily discuss the approach to the semi-automatic rule generator because it shares the same approach with the fuzz test generator, and the manual rule generator is just a simplified version of this approach. The approach is comprised of three phases to generate Byteman rules: Instrumentation, Analysis, and Synthesis.
+
+\subsection{Instrumentation}
+
+This is where we discuss hprof.
+
+\subsection{Analysis}
+
+This is where we discuss the Python application and why we used Python.
+
+\subsection{Synthesis}
+
+This is where we discuss how the rules get mashed together.
+
+\subsection{VS Code Language Extension}
+
+A feature that many developers take for granted is the language support extension for their favourite IDE. Popular IDEs such as Eclipse and Visual Studio Code offer support for various language extensions, and there are currently extensions available for the majority of modern languages. Despite this, Byteman currently has no publicly available language extension. 
+
+In an attempt to remedy this situation, Byteboy ships with a Visual Studio Code language extension, that offers support for the Byteman scripting language and a basic rule generation snippet. The extension was initialized using the Yo Code generator\cite{yocode}, and uses the TextMate language grammar format\cite{textmate} to provide functionality to the IDE. Our TextMate grammar file is based on the Byteman syntax as described in the Byteman Programmer's Guide\cite{bytemanguide}, and includes coverage for the majority of the keywords and behaviours.
+
+The language extension is not yet currently available through the Extensions Marketplace, but future work efforts will be put forward towards a public release. Currently, the only method of installation would be to grab the {\tt byteman-language-extension} folder from the Byteboy repository, and copying it into the extensions folder located in the VS Code user settings folder. On Linux, this can be accomplished using the following command: 
+\begin{center}
+{\tt cp -r byteman-language-extension \textasciitilde/.vscode/extensions}
+\end{center}
+More instructions and details of usage can be found on the language-extension page of the Byteboy repository\cite{bytemanextension}.
+
+\section{EVALUATION \& OBSERVATIONS}
+
+We evaluate Byteboy using the previously described {\tt InfLoop} program, and four "real world" examples. We will also discuss the results of using Byteboy on the test cases, and the observations that were made as a result. Lastly, we will discuss the current shortcomings and limitations of Byteboy, and how they can potentially be overcome.
+
+\subsection{Test Cases}
+
+The test cases for Byteboy include 4 buggy programs, including the {\tt InfLoop} example that has already been introduced. The other four programs are "real world" buggy programs, and we will describe the emphasis of the quotation marks here. Frankly, finding bugs in software that are easily and consistently reproducible is a lot harder than it sounds. Many popular applications will likely have had their obvious bugs patched already (assuming they made it through the review process in the first place), and many bugs that do exist may be difficult to reproduce or observe due to concurrency. Initially, we had attempted to use the GitHub search filters to find repositories containing Java applications with bugs that may be easily reproducible. However, we were instead met with a massive list of potential bugs (which is assuring), but the vast majority of them had poor documentation regarding how to reproduce the errors, let alone how to run the program itself (that's not so assuring). 
+
+After investing a considerable amount of time into finding bugs and ending up with nothing of use, we fell back to Google in an attempt to find at least some buggy programs we could use as test cases. By using the Google search engine, we used the following statement as our search criteria for finding buggy programs: "What's wrong with this Java code?". Without digging too far through the pages that Google returned, we evaluated all of the links from first page of returned search query, and selected the programs that would compile. As a result, we gathered 3 buggy programs that we could use, and while they may not be substantial in size or complexity, they are representative of Byteboy's potential user base: developers (of any skill level) who need to debug their Java programs. The programs range in functionality from a basic Binary Search implementation, to a Average calculator program, to a GUI ActionListener-based program.
+
+\subsection{Results}
+
+Discuss the actual outcome of the program runs.
+
+\subsection{Observations}
+
+Discuss the outputted rules from Byteboy.
+
+\subsection{Limitations}
+
+Discuss the limitations of our work.
+
+\section{RELATED WORK}
+
+This is where related work goes. \\
+
+\section{CONCLUSION \& FUTURE WORK}
+
+Byteman is a powerful tool for tracing and debugging Java programs by injecting code into running application methods, but currently lacks the luxuries of modern programming languages. This paper has presented Byteboy, a companion application suite for Byteman that includes a manual and semi-automatic rule generator, a fuzz test generator, and a VS Code language extension. Byteboy has shown that it can produce rules that may be of use to developers, but will require additional work towards refining and strengthening it's functionality.
+
+Future work may be conducted on the instrumentation phase of our approach, as it would be interesting to consider the results of performing different dynamic analysis algorithms on the target program in an attempt to generate a more comprehensive set of Byteman rules. Additionally, more work will be done to improve the grammar file of the language extension, and it will hopefully be available for download via the Visual Studio Marketplace in the near future.
+
+\begin{thebibliography}{99}
+
+\bibitem{bytemanwebsite} 
+Byteman: Simplify Java tracing, monitoring and testing with Byteman.
+\\\texttt{http://byteman.jboss.org/}
+
+\bibitem{bytemanguide}
+Byteman Programmer's Guide, 3.0.10, Apr 27, 2017
+\\\texttt{http://downloads.jboss.org/byteman
+/3.0.10/ProgrammersGuide.html}
+
+\bibitem{bytemanblog}
+Dinn, Andrew. (2011). A Byteman Tutorial. \\\textit{JBoss Developer}. Retrieved from: 
+\\\texttt{https://developer.jboss.org/wiki
+/ABytemanTutorial}
+
+\bibitem{yoman}
+Yeoman.
+\\\texttt{http://yeoman.io/}
+
+\bibitem{yocode}
+Yo Code - Extension Generator
+\\\texttt{https://code.visualstudio.com/docs
+/extensions/yocode}
+
+\bibitem{bytemanextension}
+Byteman Language Extension.
+\\\texttt{https://github.com/aptmac/byteboy
+/tree/master/byteman-language-extension}
+
+\bibitem{textmate}
+Textmate: Language Grammars
+\\\texttt{https://manual.macromates.com/en
+/language\_grammars}
+
+\bibitem{bytemanvideo}
+Dinn, Andrew. \\\textit{Monitoring Application-Specific Behavior Using Thermostat and Byteman}
+YouTube. 2016. URL: \\\texttt{https://www.youtube.com/watch?v=teL7qnulUTM}
+
+\end{thebibliography}
+
+\end{document}

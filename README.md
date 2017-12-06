@@ -1,9 +1,25 @@
-# Byteboy
-A Byteman Companion Application &amp; Potential Language Server/IDE Plugin for Byteman
-
+# Byteboy: A Byteman Companion Application. 
 A CMPT 479 Final Project.
 
-### Git Commit Guidelines
+## Contents
+
+### Language Extension
+
+Contains a Visual Studio Code language extension for supporting the Byteman scripting language
+
+### Motivating Example
+
+Contains an example use case for Byteman, including byteman rule files that can be used to diagnose and fix a problematic application 
+
+### Tests
+
+Contains the applications used as test cases for Byteboy's experimental results
+
+### Paper
+
+Contains the LaTeX file for our paper
+
+## Git Commit Guidelines
 
 <b>Bug Fix</b><br>
 ```fix(extension): stop crashing when doing x```

@@ -1,3 +1,4 @@
+# This rule will exit the Inf Loop
 RULE Exit The Loop 
 CLASS InfLoop
 METHOD doWork

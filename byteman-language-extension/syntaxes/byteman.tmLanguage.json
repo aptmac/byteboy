@@ -41,41 +41,41 @@
 					"begin": "\\b^(?i)rule\\b",
 					"beginCaptures": {
 						"0": {
-							"name": "keyword.other.rule.name.byteman"
+							"name": "keyword.control.rule.byteman"
 						}
 					},
 					"end": "\\n",
-					"name": "keyword.control.rule.byteman"
+					"name": "keyword.other.rule.name.byteman"
 				},
 				{
 					"begin": "\\b^(?i)class\\b",
 					"beginCaptures": {
 						"0": {
-							"name": "keyword.other.class.name.byteman"
+							"name": "keyword.control.class.byteman"
 						}
 					},
 					"end": "\\n",
-					"name": "keyword.control.class.byteman"
+					"name": "keyword.other.class.name.byteman"
 				},
 				{
 					"begin": "\\b^(?i)interface\\b",
 					"beginCaptures": {
 						"0": {
-							"name": "keyword.other.interface.name.byteman"
+							"name": "keyword.control.interface.byteman"
 						}
 					},
 					"end": "\\n",
-					"name": "keyword.control.interface.byteman"
+					"name": "keyword.other.interface.name.byteman"
 				},
 				{
 					"begin": "\\b^(?i)method\\b",
 					"beginCaptures": {
 						"0": {
-							"name": "keyword.other.method.name.byteman"
+							"name": "keyword.control.method.byteman"
 						}
 					},
 					"end": "\\n",
-					"name": "keyword.control.method.byteman"
+					"name": "keyword.other.method.name.byteman"
 				},
 				{
 					"name": "keyword.control.do.byteman",
