@@ -1,4 +1,4 @@
-# Byteboy: A Byteman Companion Application. 
+# Byteboy: A Byteman Companion Application
 A CMPT 479 Final Project.
 
 ## Contents
@@ -11,6 +11,10 @@ Contains a Python application that can be used to create and generate Byteman ru
 
 Contains a Visual Studio Code language extension for supporting the Byteman scripting language
 
+### Paper
+
+Contains the LaTeX file for our paper
+
 ### Motivating Example
 
 Contains an example use case for Byteman, including byteman rule files that can be used to diagnose and fix a problematic application 
@@ -18,10 +22,6 @@ Contains an example use case for Byteman, including byteman rule files that can 
 ### Tests
 
 Contains the applications used as test cases for Byteboy's experimental results
-
-### Paper
-
-Contains the LaTeX file for our paper
 
 ## Git Commit Guidelines
 
