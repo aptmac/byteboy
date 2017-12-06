@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # analysis.py
 # CMPT 479 - Final Project
@@ -28,11 +28,15 @@ def run_analysis(java_file_path):
     if os.path.exists(java_file_path):        
         # check to see if it is a relative path or if there is something there already
         fullpath =  os.path.realpath(java_file_path)  
-        javap_result = subprocess.check_output("javap -p -classpath " + os.path.dirname(fullpath) + " " + os.path.basename(fullpath), shell=True)
-        print javap_result
+        classpath = ''
+        if ".java" in os.path.basename(fullpath):
+            classpath = (os.path.basename(fullpath)).replace('.java', '')
+        elif ".class" in os.path.basename(fullpath):
+            classpath = (os.path.basename(fullpath)).replace('.class', '')
+        javap_result = subprocess.check_output("javap -p -classpath " + os.path.dirname(fullpath) + " " + classpath, shell=True)
         methods_with_arugments = re.findall(r"(\w+\(.*\))", javap_result)
-        print methods_with_arugments
-        os.system("java -agentlib:hprof=cpu=times -classpath " + os.path.dirname(fullpath) + " " + os.path.basename(fullpath))
+        print(methods_with_arugments)
+        os.system("java -agentlib:hprof=cpu=times -classpath " + os.path.dirname(fullpath) + " " + classpath)
         # Reads in the results, dumps some of it to the console
         results = open("./java.hprof.txt", "r")
         rankings = list()
@@ -65,7 +69,7 @@ def run_analysis(java_file_path):
                         else:
                             search_index += 1
                             break
-        print rankings
-        print "Analysis done. Check for arguments..."
+        print(rankings)
+        print("Analysis done. Check for arguments...")
     else:
-        print ("Java file does not exist.")
+        print("Java file does not exist.")

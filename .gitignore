@@ -1,5 +1,7 @@
 ../**/.idea
 .vscode/
 ../**/.vscode
-../**/.class
+**/*.class
+__pycache__
 java.hprof.txt
+analysis.pyc
