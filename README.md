@@ -3,6 +3,10 @@ A CMPT 479 Final Project.
 
 ## Contents
 
+### Byteboy
+
+Contains a Python application that can be used to create and generate Byteman rules.
+
 ### Language Extension
 
 Contains a Visual Studio Code language extension for supporting the Byteman scripting language
