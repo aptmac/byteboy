@@ -1,0 +1,8 @@
+../**/.idea
+.vscode/
+../**/.vscode
+**/*.class
+__pycache__
+java.hprof.txt
+analysis.pyc
+*.btm
