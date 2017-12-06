@@ -134,16 +134,21 @@ def interactive(rankings, methods):
     print("3. Automatic Rule Generation (for tracing purposes)")
     print("4. Fuzz Test Generator")
     print("5. Exit")
-    result = int(input("Please select your choice: "))
-    if result == 1:
+    result = raw_input("Please select your choice: ")
+    try:
+      result = int(result)
+      if result == 1:
         os.system("clear")
         manual_creation()
-    elif result == 2:
+      elif result == 2:
         os.system("clear")
         semiautomatic_creation(rankings)
-    elif result == 3:
+      elif result == 3:
         os.system("clear")
         automatic_generator()
-    elif result == 4:
+      elif result == 4:
         os.system("clear")
         fuzztest_generator(methods)
+    except ValueError:
+        print("Invalid input.")
+        print("You must supply the number of the corresponding action you wish to perform.")
