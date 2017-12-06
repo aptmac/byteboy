@@ -30,6 +30,7 @@ def run_analysis(java_file_path):
         fullpath =  os.path.realpath(java_file_path)  
         classpath = ''
         if ".java" in os.path.basename(fullpath):
+            os.system('javac ' + str(fullpath))
             classpath = (os.path.basename(fullpath)).replace('.java', '')
         elif ".class" in os.path.basename(fullpath):
             classpath = (os.path.basename(fullpath)).replace('.class', '')
