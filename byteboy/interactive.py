@@ -93,7 +93,12 @@ def manual_creation():
 # - Using the results from the analysis, functions similar to the manual creation
 # - - but suggests what Classes/Methods/etc. the user may be interested in
 # - - based on the execution of their program.
-def semiautomatic_creation():
+def semiautomatic_creation(rankings):
+    print("---------------------------")
+    print("GUIDED SEMIAUTOMATIC RULE CREATION")
+    print("---------------------------")
+    # Suggest rules that are found from our analysis
+    script = ""
     # TODO
     return
 
@@ -101,6 +106,11 @@ def semiautomatic_creation():
 # - Using the results from the analysis, automatically generates rules that can be used
 # - - to trace application behaviour and progress
 def automatic_generator():
+    print("---------------------------")
+    print("AUTOMATIC RULE CREATION - ALPHA")
+    print("---------------------------")
+    # Automatically generate rules (or try to) that are found from our analysis
+    script = ""
     # TODO
     return
 
@@ -130,7 +140,7 @@ def interactive(rankings, methods):
         manual_creation()
     elif result == 2:
         os.system("clear")
-        semiautomatic_creation()
+        semiautomatic_creation(rankings)
     elif result == 3:
         os.system("clear")
         automatic_generator()
