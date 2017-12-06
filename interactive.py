@@ -67,7 +67,9 @@ def write_to_file(script):
 # - Inspired by the Yeoman code generator, which offers similar functionality for
 # - - scaffolding JavaScript applications and VS Code extensions
 def manual_creation():
+    print("---------------------------")
     print("GUIDED MANUAL RULE CREATION")
+    print("---------------------------")
     script = ""
     # Create a generic rule based completely on user input
     script = add_rule(script, raw_input("What would you like to name your Rule: "))
@@ -104,10 +106,9 @@ def fuzztest_generator():
     return
 
 ####
-# Main
+# Main function of interactive.py
 ####
-def main():
-    os.system('clear')
+def interactive():
     print("-----------------------------------------------------")
     print("Welcome to the interactive Byteman script generator.")
     print("-----------------------------------------------------")
@@ -129,8 +130,3 @@ def main():
     elif result == 4:
         os.system("clear")
         fuzztest_generator()
-    print("Goodbye.")
-
-
-if __name__ == "__main__":
-    main()

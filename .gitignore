@@ -4,6 +4,6 @@
 **/*.class
 __pycache__
 java.hprof.txt
-analysis.pyc
+*.pyc
 *.btm
 output
