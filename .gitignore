@@ -6,3 +6,4 @@ __pycache__
 java.hprof.txt
 analysis.pyc
 *.btm
+output

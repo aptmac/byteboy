@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # interactive.py
 # CMPT 479 - Final Project
@@ -12,75 +12,89 @@
 import os
 import sys
 
-#######################################################
-# TODO
-# ----
-# Idea: Create an array/list for the rule attributes
-#       So it can be easily edited if a mistake occurs
-
 ###
 # Helper Functions for adding content to Byteman Scripts
 ###
 
+# Appends the Rule name to the script
 def add_rule(script, rule_name):
     script += "RULE "
     script += rule_name
     script += "\n"
     return script
 
+# Appends the Class name to the script
 def add_class(script, class_name):
     script += "CLASS "
     script += class_name
     script += "\n"
     return script
 
+# Appends the Method name to the script
 def add_method(script, method_name):
     script += "METHOD "
     script += method_name
     script += "\n"
     return script
 
+# Appends the entry point to the script
+def add_entry(script, entry_point):
+    script += "AT "
+    script += entry_point
+    script += "\nIF TRUE\n"
+    return script
+
+# Appends the Rule Logic to the script
 def add_body(script, body):
     script += body
     return script
 
+def write_to_file(script):
+    filename = raw_input ("What would you like to call your file?: ")
+    if filename.find(".btm") == -1:
+        filename += ".btm"
+    if not os.path.exists("output"):
+        os.makedirs("output")
+    file = open("output/" + filename, "w")
+    file.write(script)
+    file.close()
+
+# Appends the ENDRULE keyword to the script 
 def add_endrule(script):
     script += "ENDRULE"
     return script
 
-###
-# Helper Functions for Guided and User-Controlled Script Writing
-###
-def create_guided_rule():
-    # Have it just create an advanced rule, for now.
-    create_advanced_rule()
-    return
 
-def create_advanced_rule():
+def manual_creation():
+    print("GUIDED MANUAL RULE CREATION")
     script = ""
     # Create a generic rule based completely on user input
-    script = add_rule(script, input("What is the rule name: "))
-    script = add_class(script, input("What is the target Class name: "))
-    script = add_method(script, input("What is the target Method name: "))
+    script = add_rule(script, raw_input("What would you like to name your Rule: "))
+    script = add_class(script, raw_input("What is the target Class name: "))
+    script = add_method(script, raw_input("What is the target Method name: "))
+    script = add_entry(script, raw_input("When would you like to trigger activity? (ENTRY or EXIT): "))
     print("What is the body of the script?: (input an empty line when finished)")
-    body = ''
+    body = ""
     while True:
-        line = input()
+        line = raw_input()
         if not line: break
         body += line
         body += "\n"
     script = add_body(script, body)
     script = add_endrule(script)
+    write_to_file(script)
+    return
 
-    # TODO: when using a list, this should just grab the name of the rule
-    # and write that as the file name, but ask the user if they want
-    # to have the filename be different than the rule name first
-    filename = input ("What would you like to call your file?: ")
-    if filename.find(".btm") == -1:
-        filename += ".btm"
-    file = open(filename, "w")
-    file.write(script)
-    file.close()
+def semiautomatic_creation():
+    # TODO
+    return
+
+def automatic_generator():
+    # TODO
+    return
+
+def fuzztest_generator():
+    # TODO
     return
 
 ####
@@ -91,16 +105,24 @@ def main():
     print("-----------------------------------------------------")
     print("Welcome to the interactive Byteman script generator.")
     print("-----------------------------------------------------")
-    print("1. Guided Script-Template with results from analysis")
-    print("2. Advanced Template with user-directed script writing")
-    print("3. Exit")
+    print("1. Manual Rule Creation")
+    print("2. Semi-Automatic Rule Creation")
+    print("3. Automatic Rule Generation (for tracing purposes)")
+    print("4. Fuzz Test Generator")
+    print("5. Exit")
     result = int(input("Please select your choice: "))
     if result == 1:
-        os.system('clear')
-        create_guided_rule()
+        os.system("clear")
+        manual_creation()
     elif result == 2:
-        os.system('clear')
-        create_advanced_rule()
+        os.system("clear")
+        semiautomatic_creation()
+    elif result == 3:
+        os.system("clear")
+        automatic_generator()
+    elif result == 4:
+        os.system("clear")
+        fuzztest_generator()
     print("Goodbye.")
 
 
