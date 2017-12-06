@@ -18,30 +18,26 @@ import sys
 
 # Appends the Rule name to the script
 def add_rule(script, rule_name):
-    script += "RULE "
-    script += rule_name
-    script += "\n"
+    script += "RULE " + rule_name + "\n"
     return script
 
 # Appends the Class name to the script
 def add_class(script, class_name):
-    script += "CLASS "
-    script += class_name
-    script += "\n"
+    script += "CLASS " + class_name + "\n"
     return script
 
 # Appends the Method name to the script
 def add_method(script, method_name):
-    script += "METHOD "
-    script += method_name
-    script += "\n"
+    script += "METHOD " + method_name + "\n"
     return script
 
 # Appends the entry point to the script
 def add_entry(script, entry_point):
-    script += "AT "
-    script += entry_point
-    script += "\nIF TRUE\n"
+    script += "AT " + entry_point + "\n"
+    return script
+
+def add_conditional(script, condition):
+    script += "IF " + condition + "\n"
     return script
 
 # Appends the Rule Logic to the script
@@ -49,6 +45,13 @@ def add_body(script, body):
     script += body
     return script
 
+# Appends the ENDRULE keyword to the script 
+def add_endrule(script):
+    script += "ENDRULE"
+    return script
+
+# Writes the created rule to a file in the output folder, and creates
+# the output folder if it doesn't exist.
 def write_to_file(script):
     filename = raw_input ("What would you like to call your file?: ")
     if filename.find(".btm") == -1:
@@ -59,12 +62,10 @@ def write_to_file(script):
     file.write(script)
     file.close()
 
-# Appends the ENDRULE keyword to the script 
-def add_endrule(script):
-    script += "ENDRULE"
-    return script
-
-
+# Manual Creation()
+# - Guides the user through writing the necessary components of a Byteman rule
+# - Inspired by the Yeoman code generator, which offers similar functionality for
+# - - scaffolding JavaScript applications and VS Code extensions
 def manual_creation():
     print("GUIDED MANUAL RULE CREATION")
     script = ""
@@ -73,7 +74,8 @@ def manual_creation():
     script = add_class(script, raw_input("What is the target Class name: "))
     script = add_method(script, raw_input("What is the target Method name: "))
     script = add_entry(script, raw_input("When would you like to trigger activity? (ENTRY or EXIT): "))
-    print("What is the body of the script?: (input an empty line when finished)")
+    script = add_conditional(script, raw_input("Under what conditions should the rule execute? (if not sure, write TRUE): "))
+    print("What is the body of the script? (input an empty line when finished):\n- For Example: traceln(\"<text>\") could be used to write to the console.")
     body = ""
     while True:
         line = raw_input()
@@ -85,6 +87,10 @@ def manual_creation():
     write_to_file(script)
     return
 
+# Semiautomatic Creation()
+# - Using the results from the analysis, functions similar to the manual creation
+# - - but suggests what Classes/Methods/etc. the user may be interested in
+# - - based on the execution of their program.
 def semiautomatic_creation():
     # TODO
     return
