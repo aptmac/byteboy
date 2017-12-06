@@ -75,5 +75,6 @@ def run_analysis(java_file_path):
                             search_index += 1
                             break
         print(rankings)
+        return rankings, methods_with_arugments
     else:
         print("Java file does not exist.")

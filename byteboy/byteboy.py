@@ -28,8 +28,8 @@ def main(java_file):
     print("- Running program analysis")
     print("- - If you think the program is stuck looping, use <ctrl+c> to continue")
     if java_file != False:
-        run_analysis(java_file)
-        interactive()
+        rankings, methods  = run_analysis(java_file)
+        interactive(rankings, methods)
     else:
         print("You have not supplied a Java application to Byteboy.")
         print("The functionality available to you is Manual Rule Creation.")

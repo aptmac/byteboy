@@ -97,18 +97,25 @@ def semiautomatic_creation():
     # TODO
     return
 
+# Automatic Generator()
+# - Using the results from the analysis, automatically generates rules that can be used
+# - - to trace application behaviour and progress
 def automatic_generator():
     # TODO
     return
 
-def fuzztest_generator():
+# Fuzztest Generation()
+# - Using the results of the analysis, figures out the data types of the arguments used
+# - - in the method's arguments, and replace the variable contents with different values
+# - - of the same type (or null)
+def fuzztest_generator(methods):
     # TODO
     return
 
 ####
 # Main function of interactive.py
 ####
-def interactive():
+def interactive(rankings, methods):
     print("-----------------------------------------------------")
     print("Welcome to the interactive Byteman script generator.")
     print("-----------------------------------------------------")
@@ -129,4 +136,4 @@ def interactive():
         automatic_generator()
     elif result == 4:
         os.system("clear")
-        fuzztest_generator()
+        fuzztest_generator(methods)
