@@ -44,7 +44,6 @@ def run_analysis(java_file_path):
 
         for line in results:                
             if "rank " in line:
-                #for entry in results:
                 for index, entry in enumerate(results):
                     if (index < TOTAL_RANKINGS):
                         temp_list = entry.split()
@@ -65,6 +64,11 @@ def run_analysis(java_file_path):
                         if ("TRACE " not in method):
                             method = re.sub(r'\t', '', method)
                             method = re.sub(r'\n', '', method)
+                            method_name = re.findall(r"(\w+)\(.*\)", method)
+                            for entry in methods_with_arugments:
+                                if method_name[0] in entry:
+                                    argument_type = re.findall(r"(\(.*\))", entry)
+                                    method = re.sub(r"\(.*\)", argument_type[0], method)
                             rankings[search_index].append(method)
                         else:
                             search_index += 1

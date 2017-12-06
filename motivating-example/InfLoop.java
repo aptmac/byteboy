@@ -6,7 +6,8 @@ public class InfLoop {
         }
     }
 
-    private static void work() {}
+    private static void work() {
+    }
 
     public static void main(String[] args) { 
         InfLoop inf  = new InfLoop();
