@@ -48,13 +48,15 @@ def run_analysis(java_file_path):
                 for index, entry in enumerate(results):
                     if (index < TOTAL_RANKINGS):
                         temp_list = entry.split()
-                        # check to see if the process is passing CPU usage threshold
-                        if (float(temp_list[SELF].strip("%")) >= THRESHOLD):
-                            trace_search_list.append("TRACE " + temp_list[TRACE] + ":") 
-                            # ignore method name as it will appear in stack trace and accum as they are not useful for diagnostic anymore
-                            del temp_list[METHOD]
-                            del temp_list[ACCUM]
-                            rankings.append(temp_list)
+                        # Do not include items that are internal java calls
+                        if ("java." in entry):
+                            break
+                        temp_list = entry.split()
+                        trace_search_list.append("TRACE " + temp_list[TRACE] + ":") 
+                        # ignore method name as it will appear in stack trace and accum as they are not useful for diagnostic anymore
+                        del temp_list[METHOD]
+                        del temp_list[ACCUM]
+                        rankings.append(temp_list)
                     else: break
         search_index = 0 
         for search_query in trace_search_list:
