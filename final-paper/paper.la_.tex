@@ -232,11 +232,30 @@ We evaluate Byteboy using the previously described {\tt InfLoop} program, and fo
 
 The test cases for Byteboy include 4 buggy programs, including the {\tt InfLoop} example that has already been introduced. The other four programs are "real world" buggy programs, and we will describe the emphasis of the quotation marks here. Frankly, finding bugs in software that are easily and consistently reproducible is a lot harder than it sounds. Many popular applications will likely have had their obvious bugs patched already (assuming they made it through the review process in the first place), and many bugs that do exist may be difficult to reproduce or observe due to concurrency. Initially, we had attempted to use the GitHub search filters to find repositories containing Java applications with bugs that may be easily reproducible. However, we were instead met with a massive list of potential bugs (which is assuring), but the vast majority of them had poor documentation regarding how to reproduce the errors, let alone how to run the program itself (that's not so assuring). 
 
-After investing a considerable amount of time into finding bugs and ending up with nothing of use, we fell back to Google in an attempt to find at least some buggy programs we could use as test cases. By using the Google search engine, we used the following statement as our search criteria for finding buggy programs: "What's wrong with this Java code?". Without digging too far through the pages that Google returned, we evaluated all of the links from first page of returned search query, and selected the programs that would compile. As a result, we gathered 3 buggy programs that we could use, and while they may not be substantial in size or complexity, they are representative of Byteboy's potential user base: developers (of any skill level) who need to debug their Java programs. The programs range in functionality from a basic Binary Search implementation, to a Average calculator program, to a GUI ActionListener-based program.
+After investing a considerable amount of time into finding bugs and ending up with nothing of use, we fell back to Google in an attempt to find at least some buggy programs we could use as test cases. By using the Google search engine, we used the following statement as our search criteria for finding buggy programs: "What's wrong with this Java code?". Without digging too far through the pages that Google returned, we evaluated all of the links from first page of returned search query, and selected the programs that would compile. As a result, we gathered 3 buggy programs that we could use, and while they may not be substantial in size or complexity, they are representative of Byteboy's potential user base: developers (of any skill level) who need to debug their Java programs. The programs range in functionality from a basic Binary Search implementation, to an average marks calculator program, to a GUI ActionListener-based program.
 
 \subsection{Results}
 
-Discuss the actual outcome of the program runs.
+This section will focus on the outcomes of running the automatic rule generation and fuzz test generation functionality on the test programs. The following table showcases Byteboy's ability to create valid rules based on the selected action:
+\begin{center}
+ \begin{tabular}{||c | c | c||} 
+ \hline
+ Program & Auto. Generator & Fuzz Test Generator\\ [0.5ex] 
+ \hline\hline
+ A & Yes & Yes\\ 
+ \hline
+ BinarySearch & Yes & No\\
+ \hline
+ InfLoop & Yes & Yes\\
+ \hline
+ Question3 & Yes & Yes\\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+In all cases, Byteboy was able to create a set of rules which provided tracing functionality for the given program. These traces outlined the current program behaviour, and could be of use to detect control flow errors, or unexpected program behaviour.
+
+In all but one case ({\tt BinarySearch.java}), Byteboy was able to produce a set of rules which could be used to potentially alter program behaviour. For the most part, these rules had little affect on the program's execution, which means that the program is robust enough to deal with unexpected input. In the case of {\tt InfLoop.java}, the generated test actually caused the previously infinite loop to exit, ceasing execution of the program. While we are pleased with the initial results of the fuzz test generator functionality, there are many cases that cannot be properly handled, and we will explain these situations in the Limitations part of this paper. 
 
 \subsection{Observations}
 
