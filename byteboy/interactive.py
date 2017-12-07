@@ -234,33 +234,33 @@ def fuzztest_generator(methods, classname):
         if len(variables) >= 1:
             i = 1
             for var in variables:
-              value = ""
-              if var == "int":
-                  value = fuzz_int()
-              elif var == "long":
-                  value = fuzz_long()
-              elif var == "float":
-                  value = fuzz_float()
-              elif var == "double":
-                  value = fuzz_double()
-              elif var == "boolean":
-                  value = fuzz_boolean()
-              elif var == "java.lang.String":
-                  value = fuzz_string()
-              else: break  
-              # Generate the rule
-              script = ''
-              script = add_rule(script, "Fuzz {}.{}() parameter #{} of type {}".format(classname, method, i, var))
-              script = add_class(script, classname)
-              script = add_method(script, method)
-              script = add_entry(script, "ENTRY")
-              script = add_conditional(script, "TRUE")
-              script = fuzz_action(script, i, value)
-              script = add_endrule(script)
-              filename = "fuzz_{}-{}_arg{}-{}".format(classname, method, i, var)
-              files.append(filename)
-              write_to_file(script, filename)
-              i = i + 1
+                value = ""
+                if var == "int":
+                    value = fuzz_int()
+                elif var == "long":
+                    value = fuzz_long()
+                elif var == "float":
+                    value = fuzz_float()
+                elif var == "double":
+                    value = fuzz_double()
+                elif var == "boolean":
+                    value = fuzz_boolean()
+                elif var == "java.lang.String":
+                    value = fuzz_string()
+                else: continue
+                # Generate the rule
+                script = ''
+                script = add_rule(script, "Fuzz {}.{}() parameter #{} of type {}".format(classname, method, i, var))
+                script = add_class(script, classname)
+                script = add_method(script, method)
+                script = add_entry(script, "ENTRY")
+                script = add_conditional(script, "TRUE")
+                script = fuzz_action(script, i, value)
+                script = add_endrule(script)
+                filename = "fuzz_{}-{}_arg{}-{}".format(classname, method, i, var)
+                files.append(filename)
+                write_to_file(script, filename)
+                i = i + 1
     print("The following set of files have been created: " + str(files))
     print("Fuzz Test Generation has completed.")
     return
