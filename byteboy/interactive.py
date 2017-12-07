@@ -94,7 +94,7 @@ def fuzz_action(script, pos, value):
 # the output folder if it doesn't exist.
 def write_to_file(script, filename = False):
     if filename == False:
-        filename = raw_input ("What would you like to call your file?: ")
+        filename = raw_input ("What would you like to call your rule file? (e.g., <name>.btm): ")
     if filename.find(".btm") == -1:
         filename += ".btm"
     if not os.path.exists("output"):
@@ -128,19 +128,51 @@ def manual_creation():
     script = add_body(script, body)
     script = add_endrule(script)
     write_to_file(script)
+    print("Manual Creation has completed.")
     return
 
 # Semiautomatic Creation()
 # - Using the results from the analysis, functions similar to the manual creation
 # - - but suggests what Classes/Methods/etc. the user may be interested in
 # - - based on the execution of their program.
-def semiautomatic_creation(rankings, classname):
+def semiautomatic_creation(methods, classname):
     print("----------------------------------")
     print("GUIDED SEMIAUTOMATIC RULE CREATION")
     print("----------------------------------")
-    # Suggest rules that are found from our analysis
+    print("INSTRUCTIONS")
+    print("- Based on the analysis results, Byteboy will list potential options you may be interested in.")
+    print("- Feel free to use the highest ranking option, or if you type nothing then Byteboy will automatically use the first entry.")
+    print("- Let's begin!\n")
     script = ""
-    # TODO
+    print("The identified CLASS name is: " + classname)
+    method = raw_input("The identified METHODS are:\n" + str(methods) + "\nWhich METHOD do you wish to target? (only enter the name): ")
+    if method == "":
+        method = get_method_name(methods[0])
+    entry = raw_input("When would you like to trigger activity? (ENTRY/EXIT, default is ENTRY): ")
+    if entry == "":
+        entry = "ENTRY"
+    condition = raw_input("Under what conditions should the rule execute? (default is IF TRUE): ")
+    if condition == "":
+        condition = "TRUE"
+    print("What is the body of the script? (input an empty line when finished):\n- For Example: traceln(\"<text>\") could be used to write text to the console.")
+    body = "DO\n"
+    while True:
+        line = raw_input()
+        if not line: break
+        body += line
+        body += "\n"
+    rulename = raw_input("What would you like to name your rule?: ")
+
+    # Compile the rule & write to file
+    script = add_rule(script, rulename)
+    script = add_class(script, classname)
+    script = add_method(script, method)
+    script = add_entry(script, entry)
+    script = add_conditional(script, condition)
+    script = add_body(script, body)
+    script = add_endrule(script)
+    write_to_file(script)
+    print("Semi-automatic Creation has completed.")
     return
 
 # Automatic Generator()
@@ -179,6 +211,7 @@ def automatic_generator(methods, classname):
         files.append(filename)
         write_to_file(script, filename)
     print("The following set of files have been created: " + str(files))
+    print("Automatic Generation has completed.")
     return
 
 # Fuzztest Generation()
@@ -228,6 +261,7 @@ def fuzztest_generator(methods, classname):
               write_to_file(script, filename)
               i = i + 1
     print("The following set of files have been created: " + str(files))
+    print("Fuzz Test Generation has completed.")
     return
 
 def print_ascii_art():
@@ -263,7 +297,7 @@ def interactive(rankings, methods, classname):
                 manual_creation()
             elif result == 2:
                 os.system("clear")
-                semiautomatic_creation(rankings, classname)
+                semiautomatic_creation(methods, classname)
             elif result == 3:
                 automatic_generator(methods, classname)
             elif result == 4:

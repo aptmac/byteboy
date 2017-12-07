@@ -29,7 +29,7 @@ def main(java_file):
         result = raw_input("Do you wish to continue? (y/n): ")
         if result == "y":
             manual_creation()
-    print("Goodbye.")
+    print("Thank you for using Byteboy.\nHave a nice day!")
 
 if __name__ == "__main__":
     try:
