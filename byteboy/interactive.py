@@ -230,31 +230,54 @@ def fuzztest_generator(methods, classname):
     print("The following set of files have been created: " + str(files))
     return
 
+def print_ascii_art():
+    # Cool ascii art courtesy of: http://www.patorjk.com/software/taag
+    print("______       _       _")         
+    print("| ___ \     | |     | |")                
+    print("| |_/ /_   _| |_ ___| |__   ___  _   _") 
+    print("| ___ \ | | | __/ _ \ '_ \ / _ \| | | |")
+    print("| |_/ / |_| | ||  __/ |_) | (_) | |_| |")
+    print("\____/ \__, |\__\___|_.__/ \___/ \__, |")
+    print("        __/ |                     __/ |")
+    print("       |___/                     |___/")
+
 ####
 # Main function of interactive.py
 ####
 def interactive(rankings, methods, classname):
-    print("-----------------------------------------------------")
-    print("Welcome to the interactive Byteman script generator.")
-    print("-----------------------------------------------------")
-    print("1. Manual Rule Creation")
-    print("2. Semi-Automatic Rule Creation")
-    print("3. Automatic Rule Generation (for tracing purposes)")
-    print("4. Fuzz Test Generator")
-    print("5. Exit")
-    result = raw_input("Please select your choice: ")
-    try:
-      result = int(result)
-      if result == 1:
-        os.system("clear")
-        manual_creation()
-      elif result == 2:
-        os.system("clear")
-        semiautomatic_creation(rankings, classname)
-      elif result == 3:
-        automatic_generator(methods, classname)
-      elif result == 4:
-        fuzztest_generator(methods, classname)
-    except ValueError:
-        print("Invalid input.")
-        print("You must supply the number of the corresponding action you wish to perform.")
+    cont = 0
+    while(cont == 0):
+        print("-----------------------------------------------------")
+        print("Welcome to the interactive Byteman script generator.")
+        print("-----------------------------------------------------")
+        print("1. Manual Rule Creation")
+        print("2. Semi-Automatic Rule Creation")
+        print("3. Automatic Rule Generation (for tracing purposes)")
+        print("4. Fuzz Test Generator")
+        print("5. Exit")
+        result = raw_input("Please select your choice: ")
+        try:
+            result = int(result)
+            if result == 1:
+                os.system("clear")
+                manual_creation()
+            elif result == 2:
+                os.system("clear")
+                semiautomatic_creation(rankings, classname)
+            elif result == 3:
+                automatic_generator(methods, classname)
+            elif result == 4:
+                fuzztest_generator(methods, classname)
+            elif result == 5:
+                print("You have chosen to exit the program.")
+                break
+            result = raw_input("Would you like to perform another Byteboy action? (y/n): ")
+            if result == "n":
+                cont = 1
+            else:
+                os.system("clear")
+                print_ascii_art()
+        except ValueError:
+            print("Invalid input.")
+            print("You must supply the number of the corresponding action you wish to perform.")
+            break

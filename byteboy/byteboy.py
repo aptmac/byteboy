@@ -10,19 +10,12 @@ import sys
 from analysis import run_analysis
 from interactive import interactive
 from interactive import manual_creation
+from interactive import print_ascii_art
 
 def main(java_file):
     os.system("clear")
     print("Thanks for choosing")
-    # Cool ascii art courtesy of: http://www.patorjk.com/software/taag
-    print("______       _       _")         
-    print("| ___ \     | |     | |")                
-    print("| |_/ /_   _| |_ ___| |__   ___  _   _") 
-    print("| ___ \ | | | __/ _ \ '_ \ / _ \| | | |")
-    print("| |_/ / |_| | ||  __/ |_) | (_) | |_| |")
-    print("\____/ \__, |\__\___|_.__/ \___/ \__, |")
-    print("        __/ |                     __/ |")
-    print("       |___/                     |___/")
+    print_ascii_art()
     print("A Companion Application for Byteman.")
     print("---------------------------------------")
     if java_file != False:
