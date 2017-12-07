@@ -244,7 +244,7 @@ This section will focus on the outcomes of running the automatic rule generation
  \hline\hline
  A & Yes & Yes\\ 
  \hline
- BinarySearch & Yes & No\\
+ BinarySearch & Yes & Yes\\
  \hline
  InfLoop & Yes & Yes\\
  \hline
@@ -255,7 +255,7 @@ This section will focus on the outcomes of running the automatic rule generation
 
 In all cases, Byteboy was able to create a set of rules which provided tracing functionality for the given program. These traces outlined the current program behaviour, and could be of use to detect control flow errors, or unexpected program behaviour.
 
-In all but one case ({\tt BinarySearch.java}), Byteboy was able to produce a set of rules which could be used to potentially alter program behaviour. For the most part, these rules had little affect on the program's execution, which means that the program is robust enough to deal with unexpected input. In the case of {\tt InfLoop.java}, the generated test actually caused the previously infinite loop to exit, ceasing execution of the program. While we are pleased with the initial results of the fuzz test generator functionality, there are many cases that cannot be properly handled, and we will explain these situations in the Limitations part of this paper. 
+In all cases, Byteboy was able to produce a set of rules which could be used to potentially alter program behaviour. For the most part, these rules had little affect on the program's execution, which means that the program is robust enough to deal with unexpected input. In the case of {\tt InfLoop.java}, the generated test actually caused the previously infinite loop to exit, ceasing execution of the program. While we are pleased with the initial results of the fuzz test generator functionality, there are many cases that cannot be properly handled, and we will explain these situations in the Limitations part of this paper. 
 
 \subsection{Observations}
 
@@ -263,7 +263,9 @@ Each of the four programs were able to have at least some sort of their executio
 
 The fuzz test rules varied in their range of effectiveness, and their results will be explained individually.
 
-    {\tt A.java}: In the case of this program, the variable supplied to the {\tt A()} function is passed into a constructor for {\tt JFrame()}, and as a result, substituting the value of this variable has little to no effect on the application's behaviour. In this case, the fuzz test rule works only in the sense that it can be run and changes the title of the produced JFrame, but has no effect on the rest of the program's execution.
+{\tt A.java}: In the case of this program, the variable supplied to the {\tt A()} function is passed into a constructor for {\tt JFrame()}, and as a result, substituting the value of this variable has little to no effect on the application's behaviour. In this case, the fuzz test rule works only in the sense that it can be run and changes the title of the produced JFrame, but has no effect on the rest of the program's execution.
+
+{\tt BinarySearch.java}: This program has a bug in the way it outputs it's results, and while the execution is able to sustain the fuzz test randomized values, the effect on program behaviour cannot be observed.
 
 {\tt InfLoop.java}: In this program, an infinite loop is entered because the {\tt doWork()} function gets passed a variable with the value of 0, which causes a while loop to start. This while loop has no exit condition, and as a result, the program loops forever. Fortunately, the fuzz test re-assigns the value of the variable which the loop in {\tt doWork()} evaluates in order to start looping. In the case that the fuzz test generates the value of 0, then the program will infinitely loop as previous. However, it is highly likely that a non-zero value will be produced from the fuzz test randomizer, which will allow the program to bypass the infinite loop completly, thus ceasing execution of the program.
 
