@@ -186,6 +186,8 @@ def automatic_generator(methods, classname):
     files = []
     for method in methods:
         method = get_method_name(method)
+        if method == classname:
+            break # don't want to write a rule for the class declaration
         script = ''
         # Generate the Entry Rule
         script = add_rule(script, "Traceln when Entering {}.{}".format(classname, method))
