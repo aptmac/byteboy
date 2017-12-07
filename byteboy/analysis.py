@@ -77,6 +77,20 @@ def run_analysis(java_file_path):
                             search_index += 1
                             break
         print(rankings)
-        return rankings, methods_with_arugments
+        return rankings, methods_with_arugments, classpath
     else:
         print("Java file does not exist.")
+
+# Function to regex to get the variables out of the method declaration as a string
+def parse_variables(fn):
+    vars_re = re.compile(".*\((.*?)\)")
+    m = vars_re.match(fn)
+    vars_string = m.group(1).replace(" ", "")
+    vars_list = vars_string.split(",")
+    return vars_list
+
+# Given a function declaration, return the function name
+def get_method_name(method):
+    method_re = re.compile("^(.*)\(")
+    m = method_re.match(method)
+    return m.group(1)
