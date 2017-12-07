@@ -135,9 +135,9 @@ def manual_creation():
 # - - but suggests what Classes/Methods/etc. the user may be interested in
 # - - based on the execution of their program.
 def semiautomatic_creation(rankings, classname):
-    print("---------------------------")
+    print("----------------------------------")
     print("GUIDED SEMIAUTOMATIC RULE CREATION")
-    print("---------------------------")
+    print("----------------------------------")
     # Suggest rules that are found from our analysis
     script = ""
     # TODO
@@ -146,13 +146,39 @@ def semiautomatic_creation(rankings, classname):
 # Automatic Generator()
 # - Using the results from the analysis, automatically generates rules that can be used
 # - - to trace application behaviour and progress
-def automatic_generator(classname):
-    print("---------------------------")
-    print("AUTOMATIC RULE CREATION - ALPHA")
-    print("---------------------------")
+def automatic_generator(methods, classname):
+    print("---------------------------------")
+    print("AUTOMATIC RULE CREATION - Tracing")
+    print("---------------------------------")
     # Automatically generate rules (or try to) that are found from our analysis
-    script = ""
-    # TODO
+    files = []
+    for method in methods:
+        method = get_method_name(method)
+        script = ''
+        # Generate the Entry Rule
+        script = add_rule(script, "Traceln when Entering {}.{}".format(classname, method))
+        script = add_class(script, classname)
+        script = add_method(script, method)
+        script = add_entry(script, "ENTRY")
+        script = add_conditional(script, "TRUE")
+        script += "DO\ntraceln(\"- Entering {} in class {}\")\n".format(method, classname)
+        script = add_endrule(script)
+        script += "\n\n"
+
+        # Generate the Exit Rule
+        script = add_rule(script, "Traceln when Exiting {}.{}".format(classname, method))
+        script = add_class(script, classname)
+        script = add_method(script, method)
+        script = add_entry(script, "EXIT")
+        script = add_conditional(script, "TRUE")
+        script += "DO\ntraceln(\"- Exiting {} in class {}\")\n".format(method, classname)
+        script = add_endrule(script)
+
+        # Write to file
+        filename = "trace_{}-{}".format(classname, method)
+        files.append(filename)
+        write_to_file(script, filename)
+    print("The following set of files have been created: " + str(files))
     return
 
 # Fuzztest Generation()
@@ -160,6 +186,9 @@ def automatic_generator(classname):
 # - - in the method's arguments, and replace the variable contents with different values
 # - - of the same type (or null)
 def fuzztest_generator(methods, classname):
+    print("------------------------")
+    print("Fuzz Test Rule Generator")
+    print("------------------------")
     # Has support for fuzzing the following types:
     # Numeric: int, long, float, double
     # String (java.lang.String)
@@ -173,19 +202,18 @@ def fuzztest_generator(methods, classname):
             for var in variables:
               value = ""
               if var == "int":
-               value = fuzz_int()
+                  value = fuzz_int()
               elif var == "long":
-               value = fuzz_long()
+                  value = fuzz_long()
               elif var == "float":
-               value = fuzz_float()
+                  value = fuzz_float()
               elif var == "double":
-               value = fuzz_double()
+                  value = fuzz_double()
               elif var == "boolean":
-               value = fuzz_boolean()
+                  value = fuzz_boolean()
               elif var == "java.lang.String":
-                value = fuzz_string()
+                  value = fuzz_string()
               else: break  
-
               # Generate the rule
               script = ''
               script = add_rule(script, "Fuzz {}.{}() parameter #{} of type {}".format(classname, method, i, var))
@@ -199,7 +227,7 @@ def fuzztest_generator(methods, classname):
               files.append(filename)
               write_to_file(script, filename)
               i = i + 1
-    print("The following set of files have been created: ", files)
+    print("The following set of files have been created: " + str(files))
     return
 
 ####
@@ -224,10 +252,8 @@ def interactive(rankings, methods, classname):
         os.system("clear")
         semiautomatic_creation(rankings, classname)
       elif result == 3:
-        os.system("clear")
-        automatic_generator(classname)
+        automatic_generator(methods, classname)
       elif result == 4:
-        os.system("clear")
         fuzztest_generator(methods, classname)
     except ValueError:
         print("Invalid input.")
