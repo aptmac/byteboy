@@ -22,7 +22,7 @@ def run_analysis(java_file_path):
     """returns a .txt file with analysis details for interactive"""
     # Runs the profiler on the provided java class
     # ranked methods by time (5)
-    # Need its method name, CPU usage,  arguments, argmuent types, whats calling it (stack trace),
+    # Need its method name, CPU usage,  arguments, argmuent types, and whats calling it (stack trace)
     if os.path.exists(java_file_path):        
         # check to see if it is a relative path or if there is something there already
         fullpath =  os.path.realpath(java_file_path)  
