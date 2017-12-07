@@ -186,32 +186,31 @@ def automatic_generator(methods, classname):
     files = []
     for method in methods:
         method = get_method_name(method)
-        if method == classname:
-            break # don't want to write a rule for the class declaration
-        script = ''
-        # Generate the Entry Rule
-        script = add_rule(script, "Traceln when Entering {}.{}".format(classname, method))
-        script = add_class(script, classname)
-        script = add_method(script, method)
-        script = add_entry(script, "ENTRY")
-        script = add_conditional(script, "TRUE")
-        script += "DO\ntraceln(\"- Entering {} in class {}\")\n".format(method, classname)
-        script = add_endrule(script)
-        script += "\n\n"
+        if method != classname:  # don't want to write a rule for the class declaration
+            script = ''
+            # Generate the Entry Rule
+            script = add_rule(script, "Traceln when Entering {}.{}".format(classname, method))
+            script = add_class(script, classname)
+            script = add_method(script, method)
+            script = add_entry(script, "ENTRY")
+            script = add_conditional(script, "TRUE")
+            script += "DO\ntraceln(\"- Entering {} in class {}\")\n".format(method, classname)
+            script = add_endrule(script)
+            script += "\n\n"
 
-        # Generate the Exit Rule
-        script = add_rule(script, "Traceln when Exiting {}.{}".format(classname, method))
-        script = add_class(script, classname)
-        script = add_method(script, method)
-        script = add_entry(script, "EXIT")
-        script = add_conditional(script, "TRUE")
-        script += "DO\ntraceln(\"- Exiting {} in class {}\")\n".format(method, classname)
-        script = add_endrule(script)
+            # Generate the Exit Rule
+            script = add_rule(script, "Traceln when Exiting {}.{}".format(classname, method))
+            script = add_class(script, classname)
+            script = add_method(script, method)
+            script = add_entry(script, "EXIT")
+            script = add_conditional(script, "TRUE")
+            script += "DO\ntraceln(\"- Exiting {} in class {}\")\n".format(method, classname)
+            script = add_endrule(script)
 
-        # Write to file
-        filename = "trace_{}-{}".format(classname, method)
-        files.append(filename)
-        write_to_file(script, filename)
+            # Write to file
+            filename = "trace_{}-{}".format(classname, method)
+            files.append(filename)
+            write_to_file(script, filename)
     print("The following set of files have been created: " + str(files))
     print("Automatic Generation has completed.")
     return
