@@ -34,7 +34,7 @@ def run_analysis(java_file_path):
             classpath = (os.path.basename(fullpath)).replace('.class', '')
         javap_result = subprocess.check_output("javap -p -classpath " + os.path.dirname(fullpath) + " " + classpath, shell=True)
         methods_with_arugments = re.findall(r"(\w+\(.*\))", javap_result)
-        print(methods_with_arugments)
+        print("Found methods: " + str(methods_with_arugments))
         os.system("java -agentlib:hprof=cpu=times -classpath " + os.path.dirname(fullpath) + " " + classpath)
         # Reads in the results, dumps some of it to the console
         results = open("./java.hprof.txt", "r")
@@ -74,7 +74,7 @@ def run_analysis(java_file_path):
                         else:
                             search_index += 1
                             break
-        print(rankings)
+        print("Rankings: " + str(rankings))
         return rankings, methods_with_arugments, classpath
     else:
         print("Java file does not exist.")
