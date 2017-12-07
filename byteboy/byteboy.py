@@ -25,9 +25,9 @@ def main(java_file):
     print("       |___/                     |___/")
     print("A Companion Application for Byteman.")
     print("---------------------------------------")
-    print("- Running program analysis")
-    print("- - If you think the program is stuck looping, use <ctrl+c> to continue")
     if java_file != False:
+        print("- Running program analysis")
+        print("- - If you think the program is stuck looping, use <ctrl+c> to continue")
         rankings, methods  = run_analysis(java_file)
         interactive(rankings, methods)
     else:
