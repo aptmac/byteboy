@@ -37,6 +37,7 @@ apmacdon[at]sfu.ca\\
 Simon Fraser University
 \and
 {\rm Ian Pun}\\
+ipun[at]sfu.ca\\
 Simon Fraser University
 } % end author
 
@@ -202,11 +203,15 @@ This section describes our approach for Byteboy. Here, we will primarily discuss
 
 \subsection{Instrumentation}
 
-This is where we discuss hprof.
+In order for us to discover useful information in our Java application, we opted to use HProf. As a JVM native agent library, HPROF is dynamically loaded through a command line option, at JVM startup, and becomes part of the JVM process\cite{hprof}. This allows users to request relevant information such as CPU usage, method calls and their call frequency, and their stack traces. The results are then ranked, parsed, and organized through the analysis phase.  
 
 \subsection{Analysis}
 
-This is where we discuss the Python application and why we used Python.
+Majority of the work required for Byteboy is analysing the results from HPROF and presenting it back to the reader in a useful manner. We decided to use Python to handle this task as it was the most accessable and lightweight language available. 
+
+Byteboy uses HPROF to generate a {\tt java.hprof.txt} file after the Java application completes its run. It handles applications with an infinite loop by instructing the user to use the {\tt Ctrl+C} shortcut to terminate the process. This will still generate the proper {\tt java.hprof.txt} file which Byteboy will interpret. The resulting {\tt java.hprof.txt} file gives us information of all the methods called in the JVM, their call count, CPU usage, and their stack traces. Byteboy will only use the top 5 method calls that are not internal java libraries with the most CPU usage for its semi-automatic, automatic, and fuzzer features.  
+
+Unfortunately, HPROF does not generate information about method argument types, which is necessary in order to include fuzzer functionality. {\tt Javap} is a Java class file disassembler that can print out the package, protected, and public fields and methods passed into it\cite{javap}. Using Javap, we are able to create an additional analysis of the java application which strictly gives us method argument types. Byteboy will then combine the outputs of HPROF and {\tt javap} in order to produce the top 5 method calls and their respective argument types.  
 
 \subsection{Synthesis}
 
@@ -327,6 +332,16 @@ YouTube. 2016. URL: \\\texttt{https://www.youtube.com/watch?v=teL7qnulUTM}
 \bibitem{byteboy}
 Byteboy.
 \\\texttt{https://github.com/aptmac/byteboy}
+
+\bibitem{hprof}
+HPROF: A Heap/CPU Profiling Tool
+\\\texttt{https://docs.oracle.com/javase/7/docs/technotes
+/samples/hprof.html}
+
+\bibitem{javap}
+javap - The Java Class File Disassembler
+\\\texttt{https://docs.oracle.com/javase/7/docs/technotes
+/tools/windows/javap.html}
 
 \end{thebibliography}
 
