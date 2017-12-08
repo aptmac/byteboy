@@ -294,7 +294,11 @@ Lastly, the fuzz test generator only handles primitive data types at the moment,
 
 \section{RELATED WORK}
 
-This is where related work goes. \\
+\subsection{ByteBuddy}
+ByteBuddy is a popular code generation and manipulation library for creating and modifying Java classes during the runtime of a Java application\cite{bytebuddy}. The bytebuddy library allows a user can inject classes into a running JVM dynamically. Since it is a Java library, it is easier and more intuitive than Byteman rules. However, we do believe that the simplicity of Byteman rules are perferred compared to learning a new library.
+
+\subsection{AspectJ}
+Aspect-oriented programming (AOP) is a way of modularizing crosscutting concerns much like object-oriented programming is a way of modularizing common concerns\cite{aspectj}. When we have to use methods (ex. logging) that are used throughout different methods that span different classes, it can lead to code tangling or scattering. AspectJ is an extension to java that allows for the AOP paradigm to work alongside with object-oriented programming.
 
 \section{CONCLUSION \& FUTURE WORK}
 
@@ -347,6 +351,14 @@ HPROF: A Heap/CPU Profiling Tool
 \bibitem{javap}
 javap - The Java Class File Disassembler
 \\\texttt{https://docs.oracle.com/javase/7/\newline docs/technotes/tools/windows/javap.html}
+
+\bibitem{bytebuddy}
+ByteBuddy
+\\\texttt{http://bytebuddy.net/}
+
+\bibitem{aspectj}
+Introduction to aspectj
+\\\texttt{https://www.eclipse.org/aspectj/doc/released/progguide/starting-aspectj.html}
 
 \end{thebibliography}
 
