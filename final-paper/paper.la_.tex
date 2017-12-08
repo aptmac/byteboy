@@ -300,6 +300,8 @@ ByteBuddy is a popular code generation and manipulation library for creating and
 \subsection{AspectJ}
 Aspect-oriented programming (AOP) is a way of modularizing crosscutting concerns much like object-oriented programming is a way of modularizing common concerns\cite{aspectj}. When we have to use methods (ex. logging) that are used throughout different methods that span different classes, it can lead to code tangling or scattering. AspectJ is an extension to java that allows for the AOP paradigm to work alongside with object-oriented programming.
 
+Similar to ByteBuddy, there doesn't seem to be any work on recommendations of what classes to modify. Both tools require a decent amount of knowledge of the target source code. ByteBoy could eventually, using its HPROF and {\tt javap} anaylsis, support ByteBuddy and AspectJ synthesis as well. However, code synthesis for both of these tools would prove to be a different challenge on its own.
+
 \section{CONCLUSION \& FUTURE WORK}
 
 Byteman is a powerful tool for tracing and debugging Java programs by injecting code into running application methods, but currently lacks the luxuries of modern programming languages. This paper has presented Byteboy, a companion application suite for Byteman that includes a manual and semi-automatic rule generator, a fuzz test generator, and a VS Code language extension. Byteboy has shown that it can produce rules that may be of use to developers (for tracing and fuzzing purposes), but will require additional work towards broadening and strengthening it's functionality.
