@@ -207,7 +207,7 @@ In order for us to discover useful information in our Java application, we opted
 
 \subsection{Analysis}
 
-Majority of the work required for Byteboy is analysing the results from HPROF and presenting it back to the reader in a useful manner. We decided to use Python to handle this task as it was the most accessable and lightweight language available. 
+Majority of the work required for Byteboy is analyzing the results from HPROF and presenting it back to the reader in a useful manner. We decided to use Python to handle this task as it was the most accessable and lightweight language available. 
 
 Byteboy uses HPROF to generate a {\tt java.hprof.txt} file after the Java application completes its run. It handles applications with an infinite loop by instructing the user to use the {\tt Ctrl+C} shortcut to terminate the process. This will still generate the proper {\tt java.hprof.txt} file which Byteboy will interpret. The resulting {\tt java.hprof.txt} file gives us information of all the methods called in the JVM, their call count, CPU usage, and their stack traces. Byteboy will only use the top 5 method calls that are not internal java libraries with the most CPU usage for its semi-automatic, automatic, and fuzzer features.  
 
@@ -215,7 +215,15 @@ Unfortunately, HPROF does not generate information about method argument types, 
 
 \subsection{Synthesis}
 
-This is where we discuss how the rules get mashed together.
+Byteboy currently offers four different types of rule construction: manual, semi-automatic, automatic, and fuzz test generator.
+
+In manual, Byteboy goes through the required components of Byteman rule syntax, and prompts the user for input for each of the required fields. The end result is a rule constructed based solely on the information provided by the user, and is reminiscent of the Yo Code generator\cite{yocode}.
+
+In semi-automatic, the process is the same as manual, with the addition of information gathered from the analysis phase. Each Byteman rule component (with the exception of the DO block) can be auto-filled by simply pressing the enter key, and Byteboy will supply the highest ranking choice based on the analysis. However, the user is able to freely enter information here as they please, and use the displayed analytics to craft their own rules based on the result of their program's execution.
+
+In automatic, Byteboy creates a set of rules to trace application behaviour. A set of rules are created that alert the console when methods are called, which will provide real-time status reports to the user when running their program with these injected rules.
+
+In fuzz test generator, Byteboy creates a set of rules that are intended to test the durability and resilience of the source program. Byteboy uses the analysis data, and figures out what the data type of each functions parameters are. Next, a rule is constructed that replaces the variable in the function declaration with a randomized value provided by one of our many helper functions. We currently have functionality to randomize the information of int, long, float, double, boolean, and String data types. The goal of these generated rules are to see if randomized inputs can be used to crash the source program, or cause ill effects.   
 
 \subsection{VS Code Language Extension}
 
@@ -286,7 +294,7 @@ This is where related work goes. \\
 
 \section{CONCLUSION \& FUTURE WORK}
 
-Byteman is a powerful tool for tracing and debugging Java programs by injecting code into running application methods, but currently lacks the luxuries of modern programming languages. This paper has presented Byteboy, a companion application suite for Byteman that includes a manual and semi-automatic rule generator, a fuzz test generator, and a VS Code language extension. Byteboy has shown that it can produce rules that may be of use to developers, but will require additional work towards refining and strengthening it's functionality.
+Byteman is a powerful tool for tracing and debugging Java programs by injecting code into running application methods, but currently lacks the luxuries of modern programming languages. This paper has presented Byteboy, a companion application suite for Byteman that includes a manual and semi-automatic rule generator, a fuzz test generator, and a VS Code language extension. Byteboy has shown that it can produce rules that may be of use to developers (for tracing and fuzzing purposes), but will require additional work towards broadening and strengthening it's functionality.
 
 Future work may be conducted on the instrumentation phase of our approach, as it would be interesting to consider the results of performing different dynamic analysis algorithms on the target program in an attempt to generate a more comprehensive set of Byteman rules. Additionally, more work will be done to improve the grammar file of the language extension, and it will hopefully be available for download via the Visual Studio Marketplace in the near future.
 
@@ -304,13 +312,21 @@ Byteman Programmer's Guide, 3.0.10, Apr 27, 2017
 Dinn, Andrew. (2011). A Byteman Tutorial. 
 \\\textit{JBoss Developer}. Retrieved from: \\\texttt{https://developer.jboss.org/wiki/\newline ABytemanTutorial}
 
+\bibitem{bytemanvideo}
+Dinn, Andrew. \\\textit{Monitoring Application-Specific Behavior Using Thermostat and Byteman}
+YouTube. 2016. URL: \\\texttt{https://www.youtube.com/watch?v=teL7qnulUTM}
+
 \bibitem{yoman}
-Yeoman.
+Yeoman: The web's scaffolding tool for modern webapps.
 \\\texttt{http://yeoman.io/}
 
 \bibitem{yocode}
 Yo Code - Extension Generator
 \\\texttt{https://code.visualstudio.com/docs/\newline extensions/yocode}
+
+\bibitem{byteboy}
+Byteboy: A Byteman Companion Application.
+\\\texttt{https://github.com/aptmac/byteboy}
 
 \bibitem{bytemanextension}
 Byteman Language Extension.
@@ -319,14 +335,6 @@ Byteman Language Extension.
 \bibitem{textmate}
 Textmate: Language Grammars
 \\\texttt{https://manual.macromates.com/en/\newline language\_grammars}
-
-\bibitem{bytemanvideo}
-Dinn, Andrew. \\\textit{Monitoring Application-Specific Behavior Using Thermostat and Byteman}
-YouTube. 2016. URL: \\\texttt{https://www.youtube.com/watch?v=teL7qnulUTM}
-
-\bibitem{byteboy}
-Byteboy.
-\\\texttt{https://github.com/aptmac/byteboy}
 
 \bibitem{hprof}
 HPROF: A Heap/CPU Profiling Tool
